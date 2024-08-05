@@ -15,44 +15,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.infopref.models.User;
-import com.example.infopref.services.UserService;
+import com.example.infopref.models.Equipamento;
+import com.example.infopref.services.EquipamentoService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/user") // http://localhost:8080/user
+@RequestMapping("/equipamento") // http://localhost:8080/equipamento
 @Validated
-public class UserController {
-
+public class EquipamentoController {
     @Autowired
-    UserService userService;
+    EquipamentoService equipamentoService;
 
-    @GetMapping("/{id}") // http://localhost:8080/user/2
-    public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
-        User obj = this.userService.findById(id);
+    @GetMapping("/{id}") // http://localhost:8080/equipamento/2
+    public ResponseEntity<Equipamento> getEquipamento(@PathVariable("id") Long id) {
+        Equipamento obj = this.equipamentoService.findById(id);
 
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
-    public ResponseEntity<Void> postUser(@RequestBody @Valid User obj) {
-        this.userService.create(obj);
+    public ResponseEntity<Void> postEquipamento(@RequestBody @Valid Equipamento obj) {
+        this.equipamentoService.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> putUser(@PathVariable("id") Long id, @Valid @RequestBody User newObj) {
+    public ResponseEntity<Void> putEquipamento(@PathVariable("id") Long id, @Valid @RequestBody Equipamento newObj) {
         newObj.setId(id);
-        this.userService.update(newObj);
+        this.equipamentoService.update(newObj);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable("id") Long id) {
-        this.userService.deleteById(id);
+    public ResponseEntity<Void> deleteEquipamentoById(@PathVariable("id") Long id) {
+        this.equipamentoService.deleteById(id);
 
         return ResponseEntity.noContent().build();
     }

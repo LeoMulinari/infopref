@@ -1,8 +1,5 @@
 package com.example.infopref.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,26 +13,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = User.TABLENAME)
+@Table(name = Secretaria.TABLENAME)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class User {
-    public static final String TABLENAME = "usuario";
+public class Secretaria {
+    public static final String TABLENAME = "secretaria";
 
     @Id
-    @Column(name = "cod_usuario")
+    @Column(name = "cod_sec")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login", unique = true, nullable = false, updatable = false)
+    @Column(name = "nome", unique = false, nullable = false, updatable = true, length = 50)
     @NotBlank
-    @Size(min = 5, max = 30)
-    private String username;
+    private String nome;
 
-    @Column(name = "password", nullable = false, updatable = true)
+    @Column(name = "fone", unique = false, nullable = false, updatable = true)
     @NotBlank
-    @Size(min = 8, max = 20)
-    @JsonProperty(access = Access.WRITE_ONLY)
-    private String password;
+    @Size(min = 11, max = 11)
+    private String fone;
 }

@@ -15,44 +15,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.infopref.models.User;
-import com.example.infopref.services.UserService;
+import com.example.infopref.models.Tecnico;
+import com.example.infopref.services.TecnicoService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/user") // http://localhost:8080/user
+@RequestMapping("/tecnico") // http://localhost:8080/tecnico
 @Validated
-public class UserController {
-
+public class TecnicoController {
     @Autowired
-    UserService userService;
+    TecnicoService tecnicoService;
 
-    @GetMapping("/{id}") // http://localhost:8080/user/2
-    public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
-        User obj = this.userService.findById(id);
+    @GetMapping("/{id}") // http://localhost:8080/tecnico/2
+    public ResponseEntity<Tecnico> getTecnico(@PathVariable("id") Long id) {
+        Tecnico obj = this.tecnicoService.findById(id);
 
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping
-    public ResponseEntity<Void> postUser(@RequestBody @Valid User obj) {
-        this.userService.create(obj);
+    public ResponseEntity<Void> postTecnico(@RequestBody @Valid Tecnico obj) {
+        this.tecnicoService.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> putUser(@PathVariable("id") Long id, @Valid @RequestBody User newObj) {
+    public ResponseEntity<Void> putTecnico(@PathVariable("id") Long id, @Valid @RequestBody Tecnico newObj) {
         newObj.setId(id);
-        this.userService.update(newObj);
+        this.tecnicoService.update(newObj);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable("id") Long id) {
-        this.userService.deleteById(id);
+    public ResponseEntity<Void> deleteTecnicoById(@PathVariable("id") Long id) {
+        this.tecnicoService.deleteById(id);
 
         return ResponseEntity.noContent().build();
     }
