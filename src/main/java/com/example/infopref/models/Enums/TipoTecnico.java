@@ -1,4 +1,4 @@
-package com.example.infopref.models;
+package com.example.infopref.models.Enums;
 
 public enum TipoTecnico {
     Adm,

@@ -1,11 +1,7 @@
 package com.example.infopref.models;
 
-import com.example.infopref.models.Enums.TipoTecnico;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,15 +16,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = Tecnico.TABLENAME)
+@Table(name = Solicitante.TABLENAME)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Tecnico {
-    public static final String TABLENAME = "tecnico";
+public class Solicitante {
+    public static final String TABLENAME = "solicitante";
 
     @Id
-    @Column(name = "cod_tec")
+    @Column(name = "cod_sol")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -41,12 +37,15 @@ public class Tecnico {
     @Size(min = 11, max = 11)
     private String fone;
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "id_acesso_remoto", unique = true, nullable = false, updatable = true) // rever update
     @NotNull
-    @Column(name = "tipo", unique = false, nullable = false, updatable = false)
-    private TipoTecnico tipo;
+    private Long id_acesso_remoto;
 
     @ManyToOne
     @JoinColumn(name = "cod_usuario", nullable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "cod_dep", nullable = false)
+    private Departamento departamento;
 }
