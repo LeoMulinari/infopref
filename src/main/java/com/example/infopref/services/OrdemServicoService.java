@@ -20,6 +20,9 @@ public class OrdemServicoService {
     @Autowired
     SolicitanteService solicitanteService;
 
+    // @Autowired
+    // Equip_osService equip_osService;
+
     public OrdemServico findById(Long id) {
         Optional<OrdemServico> obj = this.ordemServicoRepository.findById(id);
 
@@ -45,8 +48,29 @@ public class OrdemServicoService {
 
     public OrdemServico create(OrdemServico obj) {
         obj.setId(null);
+        OrdemServico newOs = new OrdemServico();
+        newOs.setId(obj.getId());
+        newOs.setNum_protocolo(obj.getNum_protocolo());
+        newOs.setStatus(obj.getStatus());
+        newOs.setTipo_chamado(obj.getTipo_chamado());
+        newOs.setDescricao(obj.getDescricao());
+        newOs.setPrioridade(obj.getPrioridade());
+        newOs.setResolucao(obj.getResolucao());
+        newOs.setData_abertura(obj.getData_abertura());
+        newOs.setData_finalizacao(obj.getData_finalizacao());
+        newOs.setTecnico(obj.getTecnico());
+        newOs.setUser(obj.getUser());
+        newOs.setSolicitante(obj.getSolicitante());
 
-        return this.ordemServicoRepository.save(obj);
+        /*
+         * newOs = this.ordemServicoRepository.save(newOs);
+         * for (Equip_os equip_os : obj.getEquipamentos()) {
+         * equip_os.setOrdemServico(newOs);
+         * equip_osService.create(equip_os);
+         * }
+         */
+
+        return newOs;
     }
 
     public OrdemServico update(OrdemServico newObj) {
@@ -59,6 +83,7 @@ public class OrdemServicoService {
         obj.setResolucao(newObj.getResolucao());
         obj.setData_abertura(newObj.getData_abertura());
         obj.setData_finalizacao(newObj.getData_finalizacao());
+        obj.setEquipamentos(newObj.getEquipamentos());
 
         return this.ordemServicoRepository.save(obj);
     }

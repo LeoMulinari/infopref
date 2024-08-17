@@ -1,6 +1,7 @@
 package com.example.infopref.models;
 
 import java.sql.Date;
+import java.util.Set;
 
 import com.example.infopref.models.Enums.Prioridade;
 import com.example.infopref.models.Enums.StatusOS;
@@ -14,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +36,9 @@ public class OrdemServico {
     @Column(name = "cod_os")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "ordemServico")
+    Set<Equip_os> equipamentos;
 
     @Column(name = "num_protocolo", unique = true, nullable = false, updatable = false, length = 20) // rever update
     @NotBlank

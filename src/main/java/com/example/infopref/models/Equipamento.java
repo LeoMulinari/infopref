@@ -1,10 +1,13 @@
 package com.example.infopref.models;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -23,6 +26,9 @@ public class Equipamento {
     @Column(name = "cod_equip")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToMany(mappedBy = "equipamento")
+    Set<Equip_os> equipamentos;
 
     @Column(name = "num_patrimonio", unique = true, nullable = false, updatable = false, length = 20)
     @NotBlank
