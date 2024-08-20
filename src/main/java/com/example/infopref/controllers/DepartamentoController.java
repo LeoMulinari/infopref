@@ -49,9 +49,11 @@ public class DepartamentoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Departamento> update(@RequestBody DepartamentoDTO dto) {
-        Departamento departamento = departamentoService.update(dto);
-        return new ResponseEntity<>(departamento, HttpStatus.OK);
+    public ResponseEntity<Void> update(@PathVariable("id") Long id, @RequestBody @Valid DepartamentoDTO dto) {
+        dto.setId(id);
+
+        departamentoService.update(dto);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

@@ -57,6 +57,7 @@ public class DepartamentoService {
         return departamentoRepository.save(departamento);
     }
 
+    @Transactional
     public Departamento update(DepartamentoDTO dto) {
         Departamento departamento = departamentoRepository.findById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("Departamento não encontrado"));
@@ -67,7 +68,7 @@ public class DepartamentoService {
 
         List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
                 .findAllById(dto.getEquipamentosIds());
-        departamento.setEquipamentos((List<Equipamento>) (equipamentos));
+        departamento.setEquipamentos(equipamentos);
 
         return departamentoRepository.save(departamento);
     }

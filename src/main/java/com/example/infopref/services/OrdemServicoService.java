@@ -1,14 +1,18 @@
 package com.example.infopref.services;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.infopref.models.Equip_os;
 import com.example.infopref.models.Equipamento;
 import com.example.infopref.models.OrdemServico;
 import com.example.infopref.models.DTO.OrdemServicoDTO;
+import com.example.infopref.repositories.Equip_osRepository;
 import com.example.infopref.repositories.EquipamentoRepository;
 import com.example.infopref.repositories.OrdemServicoRepository;
 import com.example.infopref.repositories.SolicitanteRepository;
@@ -33,6 +37,9 @@ public class OrdemServicoService {
 
     @Autowired
     private EquipamentoRepository equipamentoRepository;
+
+    @Autowired
+    private Equip_osRepository equipOsRepository;
 
     public OrdemServico findById(Long id) {
         Optional<OrdemServico> obj = this.ordemServicoRepository.findById(id);
@@ -81,18 +88,46 @@ public class OrdemServicoService {
         return ordemServicoRepository.save(ordemServico);
     }
 
-    public OrdemServico update(OrdemServico newObj) {
-        OrdemServico obj = this.findById(newObj.getId());
+    @Transactional
+    public OrdemServico update(OrdemServicoDTO dto) {
+        OrdemServico obj = this.findById(dto.getId());
 
-        obj.setStatus(newObj.getStatus());
-        obj.setTipo_chamado(newObj.getTipo_chamado());
-        obj.setDescricao(newObj.getDescricao());
-        obj.setPrioridade(newObj.getPrioridade());
-        obj.setResolucao(newObj.getResolucao());
-        obj.setData_abertura(newObj.getData_abertura());
-        obj.setData_finalizacao(newObj.getData_finalizacao());
+        obj.setStatus(dto.getStatus());
+        obj.setTipo_chamado(dto.getTipo_chamado());
+        obj.setDescricao(dto.getDescricao());
+        obj.setPrioridade(dto.getPrioridade());
+        obj.setResolucao(dto.getResolucao());
+        obj.setData_abertura(dto.getData_abertura());
+        obj.setData_finalizacao(dto.getData_finalizacao());
 
-        return this.ordemServicoRepository.save(obj);
+        // Atualiza os equipamentos e suas datas de entrega
+        // Primeiramente, salvamos a ordem de serviço
+        obj = ordemServicoRepository.save(obj);
+
+        // Atualiza ou cria os registros equip_os com as datas de entrega
+        for (Map.Entry<Long, Date> entry : dto.getDataEntregaMap().entrySet()) {
+            Long equipamentoId = entry.getKey();
+            Date dataEntrega = entry.getValue();
+
+            // Encontra o Equipamento
+            Equipamento equipamento = equipamentoRepository.findById(equipamentoId)
+                    .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
+
+            // Encontra ou cria o Equip_os correspondente
+            Equip_os equipOs = equipOsRepository.findByOrdemServicoAndEquipamento(obj, equipamento)
+                    .orElse(new Equip_os());
+
+            // Atualiza a data de entrega
+            equipOs.setData_entrega(dataEntrega);
+            equipOs.setEquipamento(equipamento);
+            equipOs.setOrdemServico(obj);
+
+            // Salva a instância de Equip_os
+            equipOsRepository.save(equipOs);
+        }
+
+        return obj;
+
     }
 
     public void deleteById(Long id) {

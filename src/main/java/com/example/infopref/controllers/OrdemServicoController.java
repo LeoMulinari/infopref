@@ -57,7 +57,8 @@ public class OrdemServicoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> putOrdemServico(@PathVariable("id") Long id, @Valid @RequestBody OrdemServico newObj) {
+    public ResponseEntity<Void> putOrdemServico(@PathVariable("id") Long id,
+            @Valid @RequestBody OrdemServicoDTO newObj) {
         newObj.setId(id);
         this.ordemServicoService.update(newObj);
         return ResponseEntity.noContent().build();
