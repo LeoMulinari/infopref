@@ -7,7 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.infopref.models.Departamento;
+import com.example.infopref.models.Equipamento;
+import com.example.infopref.models.DTO.DepartamentoDTO;
 import com.example.infopref.repositories.DepartamentoRepository;
+import com.example.infopref.repositories.EquipamentoRepository;
+import com.example.infopref.repositories.SecretariaRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class DepartamentoService {
@@ -15,7 +21,10 @@ public class DepartamentoService {
     DepartamentoRepository departamentoRepository;
 
     @Autowired
-    SecretariaService secretariaService;
+    SecretariaRepository secretariaRepository;
+
+    @Autowired
+    private EquipamentoRepository equipamentoRepository;
 
     public Departamento findById(Long id) {
         Optional<Departamento> obj = this.departamentoRepository.findById(id);
@@ -27,25 +36,40 @@ public class DepartamentoService {
     }
 
     public List<Departamento> findAllByCod_sec(Long cod_sec) {
-        this.secretariaService.findById(cod_sec);
+        this.secretariaRepository.findById(cod_sec);
         List<Departamento> listDep = this.departamentoRepository.findAllBySecretaria_Id(cod_sec);
 
         return listDep;
     }
 
-    public Departamento create(Departamento obj) {
-        obj.setId(null);
+    @Transactional
+    public Departamento create(DepartamentoDTO dto) {
+        Departamento departamento = new Departamento();
+        departamento.setNome(dto.getNome());
+        departamento.setFone(dto.getFone());
+        departamento.setSecretaria(secretariaRepository.findById(dto.getSecretariaId()).orElseThrow());
 
-        return this.departamentoRepository.save(obj);
+        // Associando equipamentos
+        List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
+                .findAllById(dto.getEquipamentosIds());
+        departamento.setEquipamentos(equipamentos);
+
+        return departamentoRepository.save(departamento);
     }
 
-    public Departamento update(Departamento newObj) {
-        Departamento obj = this.findById(newObj.getId());
+    public Departamento update(DepartamentoDTO dto) {
+        Departamento departamento = departamentoRepository.findById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("Departamento não encontrado"));
 
-        obj.setNome(newObj.getNome());
-        obj.setFone(newObj.getFone());
+        departamento.setNome(dto.getNome());
+        departamento.setFone(dto.getFone());
+        departamento.setSecretaria(secretariaRepository.findById(dto.getSecretariaId()).orElseThrow());
 
-        return this.departamentoRepository.save(obj);
+        List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
+                .findAllById(dto.getEquipamentosIds());
+        departamento.setEquipamentos((List<Equipamento>) (equipamentos));
+
+        return departamentoRepository.save(departamento);
     }
 
     public void deleteById(Long id) {

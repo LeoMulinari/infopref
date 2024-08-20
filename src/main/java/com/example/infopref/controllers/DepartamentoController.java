@@ -1,9 +1,9 @@
 package com.example.infopref.controllers;
 
-import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.infopref.models.Departamento;
+import com.example.infopref.models.DTO.DepartamentoDTO;
 import com.example.infopref.services.DepartamentoService;
 
 import jakarta.validation.Valid;
@@ -43,18 +43,15 @@ public class DepartamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> postDepartamento(@RequestBody @Valid Departamento obj) {
-        this.departamentoService.create(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-
-        return ResponseEntity.created(uri).build();
+    public ResponseEntity<Departamento> postDepartamento(@RequestBody @Valid DepartamentoDTO departamentoDTO) {
+        Departamento departamento = departamentoService.create(departamentoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(departamento);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> putDepartamento(@PathVariable("id") Long id, @Valid @RequestBody Departamento newObj) {
-        newObj.setId(id);
-        this.departamentoService.update(newObj);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Departamento> update(@RequestBody DepartamentoDTO dto) {
+        Departamento departamento = departamentoService.update(dto);
+        return new ResponseEntity<>(departamento, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

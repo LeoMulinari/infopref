@@ -1,11 +1,16 @@
 package com.example.infopref.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -39,4 +44,8 @@ public class Departamento {
     @ManyToOne
     @JoinColumn(name = "cod_sec", nullable = false)
     private Secretaria secretaria;
+
+    @ManyToMany
+    @JoinTable(name = "equip_dep", joinColumns = @JoinColumn(name = "cod_dep"), inverseJoinColumns = @JoinColumn(name = "cod_equip"))
+    private List<Equipamento> equipamentos = new ArrayList<>();
 }

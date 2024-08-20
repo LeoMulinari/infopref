@@ -50,7 +50,7 @@ public class OrdemServicoController {
     }
 
     @PostMapping
-    public ResponseEntity<OrdemServico> criarOrdemServico(@RequestBody OrdemServicoDTO ordemServicoDTO) {
+    public ResponseEntity<OrdemServico> postOrdemServico(@RequestBody OrdemServicoDTO ordemServicoDTO) {
         OrdemServico ordemServico = ordemServicoService.create(ordemServicoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(ordemServico);
 

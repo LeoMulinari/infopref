@@ -53,4 +53,8 @@ public class Equipamento {
                 // recursão
     private List<OrdemServico> ordemServicos;
 
+    @ManyToMany(mappedBy = "equipamentos")
+    @JsonIgnore // Ignora a serialização dos equipamentos dentro de OrdemServico para evitar a
+                // recursão
+    private List<Departamento> departamentos;
 }
