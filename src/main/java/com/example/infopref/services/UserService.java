@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.infopref.models.User;
 import com.example.infopref.repositories.UserRepository;
+import com.example.infopref.services.exceptions.DataBindingViolationException;
+import com.example.infopref.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class UserService {
@@ -20,7 +22,7 @@ public class UserService {
         if (obj.isPresent()) {
             return obj.get();
         }
-        throw new RuntimeException("Usuario não encontrado {id:" + id + "}");
+        throw new ObjectNotFoundException("Usuario não encontrado {id:" + id + "}");
     }
 
     public User create(User obj) {
@@ -41,7 +43,8 @@ public class UserService {
         try {
             this.userRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao deletar usuário {id:" + id + "}", e);
+            throw new DataBindingViolationException(
+                    "Não é possível excluir o usuário {id:" + id + "} pois possui entidades relacionadas");
         }
     }
 }
