@@ -1,11 +1,9 @@
 package com.example.infopref.models;
 
-import com.example.infopref.models.Enums.TipoTecnico;
+//import com.example.infopref.models.Enums.TipoTecnico;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,10 +38,14 @@ public class Tecnico {
     @Size(min = 11, max = 11)
     private String fone;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    @Column(name = "tipo", unique = false, nullable = false, updatable = false)
-    private TipoTecnico tipo;
+    /*
+     * @Enumerated(EnumType.STRING)
+     * 
+     * @NotNull
+     * 
+     * @Column(name = "tipo", unique = false, nullable = false, updatable = false)
+     * private TipoTecnico tipo;
+     */
 
     @ManyToOne
     @JoinColumn(name = "cod_usuario", nullable = false)
