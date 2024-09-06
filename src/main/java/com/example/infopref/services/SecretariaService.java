@@ -38,6 +38,7 @@ public class SecretariaService {
     }
 
     public void deleteById(Long id) {
+        findById(id);
         try {
             this.secretariaRepository.deleteById(id);
         } catch (Exception e) {

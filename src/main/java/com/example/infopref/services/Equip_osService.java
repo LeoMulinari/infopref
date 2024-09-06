@@ -60,6 +60,7 @@ public class Equip_osService {
     }
 
     public void deleteByEquipamento_IdAndOrdemServico_Id(Long equipamento_id, Long ordemServico_id) {
+        findByEquipamento_IdAndOrdemServico_Id(equipamento_id, ordemServico_id);
         try {
             this.equip_osRepository.deleteByEquipamento_IdAndOrdemServico_Id(equipamento_id, ordemServico_id);
         } catch (Exception e) {

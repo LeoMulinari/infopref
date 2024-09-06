@@ -131,6 +131,7 @@ public class OrdemServicoService {
     }
 
     public void deleteById(Long id) {
+        findById(id);
         try {
             this.ordemServicoRepository.deleteById(id);
         } catch (Exception e) {

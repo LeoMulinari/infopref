@@ -61,6 +61,7 @@ public class Equip_depService {
     }
 
     public void deleteByEquipamento_IdAndDepartamento_Id(Long equipamento_id, Long departamento_id) {
+        findByEquipamento_IdAndDepartamento_Id(equipamento_id, departamento_id);
         try {
             this.equip_depRepository.deleteByEquipamento_IdAndDepartamento_Id(equipamento_id, departamento_id);
         } catch (Exception e) {

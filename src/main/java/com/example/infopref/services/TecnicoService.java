@@ -38,6 +38,7 @@ public class TecnicoService {
     }
 
     public void deleteById(Long id) {
+        findById(id);
         try {
             this.tecnicoRepository.deleteById(id);
         } catch (Exception e) {

@@ -74,6 +74,7 @@ public class DepartamentoService {
     }
 
     public void deleteById(Long id) {
+        findById(id);
         try {
             this.departamentoRepository.deleteById(id);
         } catch (Exception e) {

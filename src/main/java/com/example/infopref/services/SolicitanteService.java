@@ -50,6 +50,7 @@ public class SolicitanteService {
     }
 
     public void deleteById(Long id) {
+        findById(id);
         try {
             this.solicitanteRepository.deleteById(id);
         } catch (Exception e) {

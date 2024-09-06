@@ -50,6 +50,7 @@ public class InfoInternetService {
     }
 
     public void deleteById(Long id) {
+        findById(id);
         try {
             this.infoInternetRepository.deleteById(id);
         } catch (Exception e) {

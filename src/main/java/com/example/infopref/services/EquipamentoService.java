@@ -39,6 +39,7 @@ public class EquipamentoService {
     }
 
     public void deleteById(Long id) {
+        findById(id);
         try {
             this.equipamentoRepository.deleteById(id);
         } catch (Exception e) {
