@@ -2,8 +2,6 @@ package com.example.infopref.services;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,10 +26,7 @@ public class UserService {
     UserRepository userRepository;
 
     public User findById(Long id) {
-        UserSpringSecurity userSpringSecurity = authenticated();
-        if (!Objects.nonNull(userSpringSecurity)
-                || !userSpringSecurity.hasRole(TipoUser.ADM) && !id.equals(userSpringSecurity.getId()))
-            throw new AuthorizationException("Acesso negado!");
+        VerificaADM();
 
         Optional<User> obj = this.userRepository.findById(id);
         if (obj.isPresent()) {
@@ -40,11 +35,24 @@ public class UserService {
         throw new ObjectNotFoundException("Usuario não encontrado {id:" + id + "}");
     }
 
+    public void VerificaADM() {
+        UserSpringSecurity userSpringSecurity = authenticated();
+        if (!Objects.nonNull(userSpringSecurity)
+                || !userSpringSecurity.hasRole(TipoUser.ADM))
+            throw new AuthorizationException("Acesso negado!");
+    }
+
+    public void VerificaADMeTec() {
+        UserSpringSecurity userSpringSecurity = authenticated();
+        if (!Objects.nonNull(userSpringSecurity)
+                || !userSpringSecurity.hasRole(TipoUser.ADM) && !userSpringSecurity.hasRole(TipoUser.TECNICO))
+            throw new AuthorizationException("Acesso negado!");
+    }
+
     public User create(User obj) {
+        VerificaADM();
         obj.setId(null);
         obj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
-        // rever para colocar o tipo solicitante para ser criado tambem
-        obj.setProfiles(Stream.of(TipoUser.TECNICO.getCode()).collect(Collectors.toSet()));
 
         return this.userRepository.save(obj);
     }
@@ -68,7 +76,7 @@ public class UserService {
         }
     }
 
-    public static UserSpringSecurity authenticated() {
+    public UserSpringSecurity authenticated() {
         try {
             return (UserSpringSecurity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (Exception e) {

@@ -3,6 +3,7 @@ package com.example.infopref.services;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import com.example.infopref.repositories.OrdemServicoRepository;
 import com.example.infopref.repositories.SolicitanteRepository;
 import com.example.infopref.repositories.TecnicoRepository;
 import com.example.infopref.repositories.UserRepository;
+import com.example.infopref.security.UserSpringSecurity;
+import com.example.infopref.services.exceptions.AuthorizationException;
 
 import jakarta.transaction.Transactional;
 
@@ -41,16 +44,23 @@ public class OrdemServicoService {
     @Autowired
     private Equip_osRepository equipOsRepository;
 
+    @Autowired
+    UserService userService;
+
     public OrdemServico findById(Long id) {
         Optional<OrdemServico> obj = this.ordemServicoRepository.findById(id);
-
-        if (obj.isPresent()) {
-            return obj.get();
+        if (obj.isEmpty()) {
+            throw new RuntimeException("Ordem de Serviço não encontrada {id:" + id + "}");
         }
-        throw new RuntimeException("Ordem de Serviço não encontrada {id:" + id + "}");
+        UserSpringSecurity userSpringSecurity = userService.authenticated();
+        if (!Objects.nonNull(userSpringSecurity) || !id.equals(obj.get().getSolicitante().getId()))
+            throw new AuthorizationException("Acesso negado!");
+        return obj.get();
+
     }
 
     public List<OrdemServico> findAllByCod_tec(Long cod_tec) {
+        userService.VerificaADMeTec();
         this.tecnicoRepository.findById(cod_tec);
         List<OrdemServico> listTec = this.ordemServicoRepository.findAllByTecnico_Id(cod_tec);
 
@@ -58,6 +68,7 @@ public class OrdemServicoService {
     }
 
     public List<OrdemServico> findAllByCod_sol(Long cod_sol) {
+        userService.VerificaADMeTec();
         this.solicitanteRepository.findById(cod_sol);
         List<OrdemServico> listSol = this.ordemServicoRepository.findAllBySolicitante_Id(cod_sol);
 
@@ -66,6 +77,9 @@ public class OrdemServicoService {
 
     @Transactional
     public OrdemServico create(OrdemServicoDTO dto) {
+        UserSpringSecurity userSpringSecurity = userService.authenticated();
+        if (!Objects.nonNull(userSpringSecurity))
+            throw new AuthorizationException("Acesso negado!");
         OrdemServico ordemServico = new OrdemServico();
         ordemServico.setNum_protocolo(dto.getNum_protocolo());
         ordemServico.setStatus(dto.getStatus());
@@ -90,6 +104,7 @@ public class OrdemServicoService {
 
     @Transactional
     public OrdemServico update(OrdemServicoDTO dto) {
+        userService.VerificaADMeTec();
         OrdemServico obj = this.findById(dto.getId());
 
         obj.setStatus(dto.getStatus());
@@ -131,6 +146,7 @@ public class OrdemServicoService {
     }
 
     public void deleteById(Long id) {
+        userService.VerificaADMeTec();
         findById(id);
         try {
             this.ordemServicoRepository.deleteById(id);

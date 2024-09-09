@@ -36,14 +36,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login", unique = true, nullable = false, updatable = false)
+    @Column(name = "login", unique = true, nullable = false, updatable = false, length = 30)
     @NotBlank
     @Size(min = 5, max = 30)
     private String username;
 
     @Column(name = "password", nullable = false, updatable = true)
     @NotBlank
-    // @Size(min = 8, max = 20) //rever tamanho para a criptografação
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 

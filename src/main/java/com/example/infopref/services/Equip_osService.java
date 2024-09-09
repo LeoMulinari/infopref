@@ -22,7 +22,11 @@ public class Equip_osService {
     @Autowired
     EquipamentoService equipamentoService;
 
+    @Autowired
+    UserService userService;
+
     public Equip_os findByEquipamento_IdAndOrdemServico_Id(Long equipamento_id, Long ordemServico_id) {
+        userService.VerificaADMeTec();
         Optional<Equip_os> obj = this.equip_osRepository.findByEquipamento_IdAndOrdemServico_Id(equipamento_id,
                 ordemServico_id);
 

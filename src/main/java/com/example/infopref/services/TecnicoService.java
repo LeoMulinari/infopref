@@ -13,7 +13,11 @@ public class TecnicoService {
     @Autowired
     TecnicoRepository tecnicoRepository;
 
+    @Autowired
+    UserService userService;
+
     public Tecnico findById(Long id) {
+        userService.VerificaADM();
         Optional<Tecnico> obj = this.tecnicoRepository.findById(id);
 
         if (obj.isPresent()) {
@@ -23,6 +27,7 @@ public class TecnicoService {
     }
 
     public Tecnico create(Tecnico obj) {
+        userService.VerificaADM();
         obj.setId(null);
 
         return this.tecnicoRepository.save(obj);

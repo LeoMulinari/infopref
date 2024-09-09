@@ -1,6 +1,8 @@
 package com.example.infopref.controllers;
 
 import java.net.URI;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.infopref.models.User;
+import com.example.infopref.models.Enums.TipoUser;
 import com.example.infopref.services.UserService;
 
 import jakarta.validation.Valid;
@@ -37,6 +40,16 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Void> postUser(@RequestBody @Valid User obj) {
+        obj.setProfiles(Stream.of(TipoUser.TECNICO.getCode()).collect(Collectors.toSet()));
+        this.userService.create(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
+
+    @PostMapping("/solicitante")
+    public ResponseEntity<Void> postUserSolicitante(@RequestBody @Valid User obj) {
+        obj.setProfiles(Stream.of(TipoUser.SOLICITANTE.getCode()).collect(Collectors.toSet()));
         this.userService.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 

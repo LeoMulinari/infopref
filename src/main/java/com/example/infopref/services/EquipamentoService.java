@@ -13,7 +13,11 @@ public class EquipamentoService {
     @Autowired
     EquipamentoRepository equipamentoRepository;
 
+    @Autowired
+    UserService userService;
+
     public Equipamento findById(Long id) {
+        userService.VerificaADMeTec();
         Optional<Equipamento> obj = this.equipamentoRepository.findById(id);
 
         if (obj.isPresent()) {
@@ -23,6 +27,7 @@ public class EquipamentoService {
     }
 
     public Equipamento create(Equipamento obj) {
+        userService.VerificaADMeTec();
         obj.setId(null);
 
         return this.equipamentoRepository.save(obj);

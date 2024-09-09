@@ -13,7 +13,11 @@ public class SecretariaService {
     @Autowired
     SecretariaRepository secretariaRepository;
 
+    @Autowired
+    UserService userService;
+
     public Secretaria findById(Long id) {
+        userService.VerificaADMeTec();
         Optional<Secretaria> obj = this.secretariaRepository.findById(id);
 
         if (obj.isPresent()) {
@@ -23,6 +27,7 @@ public class SecretariaService {
     }
 
     public Secretaria create(Secretaria obj) {
+        userService.VerificaADMeTec();
         obj.setId(null);
 
         return this.secretariaRepository.save(obj);

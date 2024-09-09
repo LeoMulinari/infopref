@@ -23,7 +23,11 @@ public class Equip_depService {
     @Autowired
     EquipamentoService equipamentoService;
 
+    @Autowired
+    UserService userService;
+
     public Equip_dep findByEquipamento_IdAndDepartamento_Id(Long equipamento_id, Long departamento_id) {
+        userService.VerificaADMeTec();
         Optional<Equip_dep> obj = this.equip_depRepository.findByEquipamento_IdAndDepartamento_Id(equipamento_id,
                 departamento_id);
 
@@ -34,6 +38,7 @@ public class Equip_depService {
     }
 
     public List<Equip_dep> findAllByCod_dep(Long cod_dep) {
+        userService.VerificaADMeTec();
         this.departamentoService.findById(cod_dep);
         List<Equip_dep> listDep = this.equip_depRepository.findAllByDepartamento_Id(cod_dep);
 
@@ -41,6 +46,7 @@ public class Equip_depService {
     }
 
     public Equip_dep create(Equip_dep obj) {
+        userService.VerificaADMeTec();
         Equipamento equipamento = equipamentoService.findById(obj.getEquipamento().getId());
         Departamento departamento = departamentoService.findById(obj.getDepartamento().getId());
         obj.setEquipamento(equipamento);
@@ -50,6 +56,7 @@ public class Equip_depService {
     }
 
     public Equip_dep update(Equip_dep newObj) {
+        userService.VerificaADMeTec();
         Equipamento equipamento = equipamentoService.findById(newObj.getEquipamento().getId());
         Departamento departamento = departamentoService.findById(newObj.getDepartamento().getId());
 

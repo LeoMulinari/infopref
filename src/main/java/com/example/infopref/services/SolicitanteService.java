@@ -17,7 +17,11 @@ public class SolicitanteService {
     @Autowired
     DepartamentoService departamentoService;
 
+    @Autowired
+    UserService userService;
+
     public Solicitante findById(Long id) {
+        userService.VerificaADMeTec();
         Optional<Solicitante> obj = this.solicitanteRepository.findById(id);
 
         if (obj.isPresent()) {
@@ -34,6 +38,7 @@ public class SolicitanteService {
     }
 
     public Solicitante create(Solicitante obj) {
+        userService.VerificaADMeTec();
         obj.setId(null);
 
         return this.solicitanteRepository.save(obj);

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -36,12 +37,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
     @Value("${server.error.include-exception}")
     private boolean printStackTrace;
 
-    // ver pq override tava dando problema
+    @Override
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException methodArgumentNotValidException,
             HttpHeaders headers,
-            HttpStatus status,
+            HttpStatusCode status,
             WebRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.UNPROCESSABLE_ENTITY.value(),
@@ -80,7 +81,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
                 request);
     }
 
-    // achar biblioteca javax
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseEntity<Object> handleConstraintViolationException(
@@ -178,12 +178,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
         Integer status = HttpStatus.UNAUTHORIZED.value();
         response.setStatus(status);
         response.setContentType("application/json");
-
-        // Logar a exceção e imprimir o stack trace
-        log.error("Erro de autenticação: {}", exception.getMessage());
-        if (printStackTrace) {
-            exception.printStackTrace(); // Mostra o stack trace no console
-        }
 
         ErrorResponse errorResponse = new ErrorResponse(status, "Usuário ou senha inválidos.");
         response.getWriter().append(errorResponse.toJson());

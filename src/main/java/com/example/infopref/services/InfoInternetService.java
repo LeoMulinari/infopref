@@ -17,7 +17,11 @@ public class InfoInternetService {
     @Autowired
     DepartamentoService departamentoService;
 
+    @Autowired
+    UserService userService;
+
     public InfoInternet findById(Long id) {
+        userService.VerificaADMeTec();
         Optional<InfoInternet> obj = this.infoInternetRepository.findById(id);
 
         if (obj.isPresent()) {
@@ -34,6 +38,7 @@ public class InfoInternetService {
     }
 
     public InfoInternet create(InfoInternet obj) {
+        userService.VerificaADMeTec();
         obj.setId(null);
 
         return this.infoInternetRepository.save(obj);

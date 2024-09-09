@@ -26,7 +26,11 @@ public class DepartamentoService {
     @Autowired
     private EquipamentoRepository equipamentoRepository;
 
+    @Autowired
+    UserService userService;
+
     public Departamento findById(Long id) {
+        userService.VerificaADMeTec();
         Optional<Departamento> obj = this.departamentoRepository.findById(id);
 
         if (obj.isPresent()) {
@@ -44,6 +48,7 @@ public class DepartamentoService {
 
     @Transactional
     public Departamento create(DepartamentoDTO dto) {
+        userService.VerificaADMeTec();
         Departamento departamento = new Departamento();
         departamento.setNome(dto.getNome());
         departamento.setFone(dto.getFone());
