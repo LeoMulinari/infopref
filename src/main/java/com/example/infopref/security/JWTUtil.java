@@ -21,10 +21,11 @@ public class JWTUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    public String generateToken(String username) {
+    public String generateToken(UserSpringSecurity userSpringSecurity) {
         SecretKey key = getKeyBySecret();
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(userSpringSecurity.getUsername())
+                .setId(userSpringSecurity.getId().toString())
                 .setExpiration(new Date(System.currentTimeMillis() + this.expiration))
                 .signWith(key)
                 .compact();
