@@ -28,8 +28,13 @@ public class InfoInternetController {
     @Autowired
     InfoInternetService infoInternetService;
 
+    @GetMapping
+    public ResponseEntity<List<InfoInternet>> getInfoInternet() {
+        return ResponseEntity.ok().body(infoInternetService.findAll());
+    }
+
     @GetMapping("/{id}") // http://localhost:8080/infoInternet/2
-    public ResponseEntity<InfoInternet> getInfoInternet(@PathVariable("id") Long id) {
+    public ResponseEntity<InfoInternet> getInfoInternetById(@PathVariable("id") Long id) {
         InfoInternet obj = this.infoInternetService.findById(id);
 
         return ResponseEntity.ok().body(obj);

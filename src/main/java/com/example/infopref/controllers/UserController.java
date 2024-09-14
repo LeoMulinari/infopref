@@ -1,6 +1,7 @@
 package com.example.infopref.controllers;
 
 import java.net.URI;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,6 +31,11 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping
+    public ResponseEntity<List<User>> getUser() {
+        return ResponseEntity.ok().body(userService.findAll());
+    }
 
     @GetMapping("/{id}") // http://localhost:8080/user/2
     public ResponseEntity<User> getUser(@PathVariable("id") Long id) {

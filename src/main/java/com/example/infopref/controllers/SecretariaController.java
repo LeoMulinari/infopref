@@ -1,6 +1,7 @@
 package com.example.infopref.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,13 @@ public class SecretariaController {
     @Autowired
     SecretariaService secretariaService;
 
+    @GetMapping
+    public ResponseEntity<List<Secretaria>> getSecretaria() {
+        return ResponseEntity.ok().body(secretariaService.findAll());
+    }
+
     @GetMapping("/{id}") // http://localhost:8080/secretaria/2
-    public ResponseEntity<Secretaria> getSecretaria(@PathVariable("id") Long id) {
+    public ResponseEntity<Secretaria> getSecretariaById(@PathVariable("id") Long id) {
         Secretaria obj = this.secretariaService.findById(id);
 
         return ResponseEntity.ok().body(obj);

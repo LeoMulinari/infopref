@@ -47,6 +47,10 @@ public class OrdemServicoService {
     @Autowired
     UserService userService;
 
+    public List<OrdemServico> findAll() {
+        return ordemServicoRepository.findAll();
+    }
+
     public OrdemServico findById(Long id) {
         Optional<OrdemServico> obj = this.ordemServicoRepository.findById(id);
         if (obj.isEmpty()) {

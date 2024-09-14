@@ -1,5 +1,6 @@
 package com.example.infopref.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,10 @@ public class TecnicoService {
 
     @Autowired
     UserService userService;
+
+    public List<Tecnico> findAll() {
+        return tecnicoRepository.findAll();
+    }
 
     public Tecnico findById(Long id) {
         userService.VerificaADM();

@@ -1,5 +1,6 @@
 package com.example.infopref.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -24,6 +25,10 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
 
     public User findById(Long id) {
         VerificaADM();

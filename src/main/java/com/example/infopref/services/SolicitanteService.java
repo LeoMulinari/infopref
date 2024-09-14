@@ -20,6 +20,10 @@ public class SolicitanteService {
     @Autowired
     UserService userService;
 
+    public List<Solicitante> findAll() {
+        return solicitanteRepository.findAll();
+    }
+
     public Solicitante findById(Long id) {
         userService.VerificaADMeTec();
         Optional<Solicitante> obj = this.solicitanteRepository.findById(id);

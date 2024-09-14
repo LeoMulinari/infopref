@@ -28,8 +28,13 @@ public class OrdemServicoController {
     @Autowired
     OrdemServicoService ordemServicoService;
 
+    @GetMapping
+    public ResponseEntity<List<OrdemServico>> getOrdemServico() {
+        return ResponseEntity.ok().body(ordemServicoService.findAll());
+    }
+
     @GetMapping("/{id}") // http://localhost:8080/ordemServico/2
-    public ResponseEntity<OrdemServico> getOrdemServico(@PathVariable("id") Long id) {
+    public ResponseEntity<OrdemServico> getOrdemServicoById(@PathVariable("id") Long id) {
         OrdemServico obj = this.ordemServicoService.findById(id);
 
         return ResponseEntity.ok().body(obj);

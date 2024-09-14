@@ -29,6 +29,10 @@ public class DepartamentoService {
     @Autowired
     UserService userService;
 
+    public List<Departamento> findAll() {
+        return departamentoRepository.findAll();
+    }
+
     public Departamento findById(Long id) {
         userService.VerificaADMeTec();
         Optional<Departamento> obj = this.departamentoRepository.findById(id);

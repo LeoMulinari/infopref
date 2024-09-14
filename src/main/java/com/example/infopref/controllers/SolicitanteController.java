@@ -28,8 +28,13 @@ public class SolicitanteController {
     @Autowired
     SolicitanteService solicitanteService;
 
+    @GetMapping
+    public ResponseEntity<List<Solicitante>> getSolicitante() {
+        return ResponseEntity.ok().body(solicitanteService.findAll());
+    }
+
     @GetMapping("/{id}") // http://localhost:8080/solicitante/2
-    public ResponseEntity<Solicitante> getSolicitante(@PathVariable("id") Long id) {
+    public ResponseEntity<Solicitante> getSolicitanteById(@PathVariable("id") Long id) {
         Solicitante obj = this.solicitanteService.findById(id);
 
         return ResponseEntity.ok().body(obj);

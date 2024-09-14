@@ -38,15 +38,6 @@ public class Tecnico {
     @Size(min = 11, max = 11)
     private String fone;
 
-    /*
-     * @Enumerated(EnumType.STRING)
-     * 
-     * @NotNull
-     * 
-     * @Column(name = "tipo", unique = false, nullable = false, updatable = false)
-     * private TipoTecnico tipo;
-     */
-
     @ManyToOne
     @JoinColumn(name = "cod_usuario", nullable = false)
     private User user;

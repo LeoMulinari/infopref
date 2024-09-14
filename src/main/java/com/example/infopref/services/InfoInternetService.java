@@ -20,6 +20,10 @@ public class InfoInternetService {
     @Autowired
     UserService userService;
 
+    public List<InfoInternet> findAll() {
+        return infoInternetRepository.findAll();
+    }
+
     public InfoInternet findById(Long id) {
         userService.VerificaADMeTec();
         Optional<InfoInternet> obj = this.infoInternetRepository.findById(id);

@@ -28,8 +28,13 @@ public class DepartamentoController {
     @Autowired
     DepartamentoService departamentoService;
 
+    @GetMapping
+    public ResponseEntity<List<Departamento>> getDepartamento() {
+        return ResponseEntity.ok().body(departamentoService.findAll());
+    }
+
     @GetMapping("/{id}") // http://localhost:8080/departamento/2
-    public ResponseEntity<Departamento> getDepartamento(@PathVariable("id") Long id) {
+    public ResponseEntity<Departamento> getDepartamentoById(@PathVariable("id") Long id) {
         Departamento obj = this.departamentoService.findById(id);
 
         return ResponseEntity.ok().body(obj);
