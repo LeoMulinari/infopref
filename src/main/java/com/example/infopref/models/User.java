@@ -1,10 +1,12 @@
 package com.example.infopref.models;
 
 import com.example.infopref.models.Enums.TipoUser;
+import com.example.infopref.models.Enums.TipoUserConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,6 +41,7 @@ public class User {
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
+    @Convert(converter = TipoUserConverter.class)
     @Column(name = "profile", nullable = false)
     private TipoUser profile;
 

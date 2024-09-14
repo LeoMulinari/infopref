@@ -30,7 +30,7 @@ public class UserSpringSecurity implements UserDetails {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.authorities = tipoUsers.stream().map(x -> new SimpleGrantedAuthority(x.getDescription()))
+        this.authorities = tipoUsers.stream().map(x -> new SimpleGrantedAuthority(x.toString()))
                 .collect(Collectors.toList());
     }
 
@@ -55,6 +55,6 @@ public class UserSpringSecurity implements UserDetails {
     }
 
     public boolean hasRole(TipoUser tipoUser) {
-        return getAuthorities().contains(new SimpleGrantedAuthority(tipoUser.getDescription()));
+        return getAuthorities().contains(new SimpleGrantedAuthority(tipoUser.toString()));
     }
 }

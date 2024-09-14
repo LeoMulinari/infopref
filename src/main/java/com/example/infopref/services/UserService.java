@@ -9,8 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.infopref.models.Enums.TipoUser;
 import com.example.infopref.models.User;
+import com.example.infopref.models.Enums.TipoUser;
 import com.example.infopref.repositories.UserRepository;
 import com.example.infopref.security.UserSpringSecurity;
 import com.example.infopref.services.exceptions.AuthorizationException;
@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        VerificaADM();
+        //VerificaADM();
 
         Optional<User> obj = this.userRepository.findById(id);
         if (obj.isPresent()) {
@@ -59,6 +59,7 @@ public class UserService {
         VerificaADM();
         obj.setId(null);
         obj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
+        System.out.println(obj.toString());
 
         return this.userRepository.save(obj);
     }
