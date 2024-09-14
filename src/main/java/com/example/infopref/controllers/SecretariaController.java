@@ -22,7 +22,7 @@ import com.example.infopref.services.SecretariaService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/secretaria") // http://localhost:8080/secretaria
+@RequestMapping("/secretarias") // http://localhost:8080/secretaria
 @Validated
 public class SecretariaController {
     @Autowired
