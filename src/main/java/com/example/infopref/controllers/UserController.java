@@ -2,8 +2,6 @@ package com.example.infopref.controllers;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}") // http://localhost:8080/user/2
-    public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
+    public ResponseEntity<User> getUserAndProfile(@PathVariable("id") Long id) {
         User obj = this.userService.findById(id);
 
         return ResponseEntity.ok().body(obj);
@@ -46,7 +44,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Void> postUser(@RequestBody @Valid User obj) {
-        obj.setProfiles(Stream.of(TipoUser.TECNICO.getCode()).collect(Collectors.toSet()));
+        obj.setProfile(TipoUser.TECNICO);
         this.userService.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
@@ -55,7 +53,7 @@ public class UserController {
 
     @PostMapping("/solicitante")
     public ResponseEntity<Void> postUserSolicitante(@RequestBody @Valid User obj) {
-        obj.setProfiles(Stream.of(TipoUser.SOLICITANTE.getCode()).collect(Collectors.toSet()));
+        obj.setProfile(TipoUser.SOLICITANTE);
         this.userService.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
