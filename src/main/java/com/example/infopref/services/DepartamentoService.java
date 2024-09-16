@@ -82,7 +82,7 @@ public class DepartamentoService {
 
         departamento.setNome(dto.getNome());
         departamento.setFone(dto.getFone());
-        departamento.setSecretaria(secretariaRepository.findById(dto.getSecretariaId()).orElseThrow());
+        // departamento.setSecretaria(secretariaRepository.findById(dto.getSecretariaId()).orElseThrow());
 
         List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
                 .findAllById(dto.getEquipamentosIds());

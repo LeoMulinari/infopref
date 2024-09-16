@@ -69,7 +69,7 @@ public class EquipamentoService {
     public Equipamento update(Equipamento newObj) {
         Equipamento obj = this.findById(newObj.getId());
 
-        obj.setNum_patrimonio(newObj.getNum_patrimonio());
+        // obj.setNum_patrimonio(newObj.getNum_patrimonio());
         obj.setModelo(newObj.getModelo());
         obj.setMarca(newObj.getMarca());
         obj.setDescr_tec(newObj.getDescr_tec());
