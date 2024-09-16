@@ -35,7 +35,7 @@ public class Tecnico {
 
     @Column(name = "fone", unique = false, nullable = false, updatable = true)
     @NotBlank
-    @Size(min = 11, max = 11)
+    @Size(min = 14, max = 15)
     private String fone;
 
     @ManyToOne
