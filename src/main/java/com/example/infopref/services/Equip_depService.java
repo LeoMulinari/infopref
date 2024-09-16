@@ -47,6 +47,11 @@ public class Equip_depService {
 
     public Equip_dep create(Equip_dep obj) {
         userService.VerificaADMeTec();
+
+        System.out.println("Associando Equipamento ID = " + obj.getEquipamento().getId() +
+                " com Departamento ID = " + obj.getDepartamento().getId() +
+                ", Data Aquisicao = " + obj.getData_aquisicao());
+
         Equipamento equipamento = equipamentoService.findById(obj.getEquipamento().getId());
         Departamento departamento = departamentoService.findById(obj.getDepartamento().getId());
         obj.setEquipamento(equipamento);

@@ -29,7 +29,7 @@ public class Equipamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "num_patrimonio", unique = true, nullable = false, updatable = false, length = 20)
+    @Column(name = "num_patrimonio", unique = true, nullable = false, updatable = true, length = 20)
     @NotBlank
     private String num_patrimonio;
 

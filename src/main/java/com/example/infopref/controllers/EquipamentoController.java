@@ -1,9 +1,11 @@
 package com.example.infopref.controllers;
 
 import java.net.URI;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,10 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.infopref.models.Equipamento;
+import com.example.infopref.models.DTO.EquipamentoDTO;
 import com.example.infopref.services.EquipamentoService;
 
 import jakarta.validation.Valid;
@@ -40,23 +44,37 @@ public class EquipamentoController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @GetMapping("/departamento/{departamentoId}")
+    @GetMapping("/departamento/{id}")
     public ResponseEntity<List<Equipamento>> getEquipamentosByDepartamento(
             @PathVariable("id") Long id) {
         List<Equipamento> equipamentos = equipamentoService.findByDepartamento(id);
         return ResponseEntity.ok().body(equipamentos);
     }
 
-    @PostMapping
-    public ResponseEntity<Void> postEquipamento(@RequestBody @Valid Equipamento obj) {
-        this.equipamentoService.create(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+    @PostMapping("/equipamentodep")
+    public ResponseEntity<Void> postEquipamento(
+            @RequestBody @Valid EquipamentoDTO equipamentoDTO,
+            @RequestParam Long departamentoId,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date data_aquisicao) {
+        System.out.println(
+                "POST Equipamento: Departamento ID = " + departamentoId + ", Data Aquisicao = " + data_aquisicao);
+        Equipamento obj = new Equipamento();
+        // Configurar obj com os dados do DTO
+        obj.setNum_patrimonio(equipamentoDTO.getNum_patrimonio());
+        obj.setModelo(equipamentoDTO.getModelo());
+        obj.setMarca(equipamentoDTO.getMarca());
+        obj.setDescr_tec(equipamentoDTO.getDescr_tec());
 
+        equipamentoService.create(obj, departamentoId, data_aquisicao);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> putEquipamento(@PathVariable("id") Long id, @Valid @RequestBody Equipamento newObj) {
+        System.out.println(newObj);
+        System.out.println(id);
         newObj.setId(id);
         this.equipamentoService.update(newObj);
         return ResponseEntity.noContent().build();
