@@ -33,6 +33,11 @@ public class TecnicoService {
 
     public Tecnico create(Tecnico obj) {
         userService.VerificaADM();
+        // Certifique-se de que o usuário associado existe
+        if (obj.getUser() == null || obj.getUser().getId() == null) {
+            throw new RuntimeException("Usuário não informado ou inválido");
+        }
+
         obj.setId(null);
 
         return this.tecnicoRepository.save(obj);

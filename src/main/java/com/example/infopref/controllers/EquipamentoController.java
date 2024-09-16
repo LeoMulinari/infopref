@@ -22,7 +22,7 @@ import com.example.infopref.services.EquipamentoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/equipamento") // http://localhost:8080/equipamento
+@RequestMapping("/equipamentos") // http://localhost:8080/equipamento
 @Validated
 public class EquipamentoController {
     @Autowired
@@ -38,6 +38,13 @@ public class EquipamentoController {
         Equipamento obj = this.equipamentoService.findById(id);
 
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping("/departamento/{departamentoId}")
+    public ResponseEntity<List<Equipamento>> getEquipamentosByDepartamento(
+            @PathVariable("id") Long id) {
+        List<Equipamento> equipamentos = equipamentoService.findByDepartamento(id);
+        return ResponseEntity.ok().body(equipamentos);
     }
 
     @PostMapping

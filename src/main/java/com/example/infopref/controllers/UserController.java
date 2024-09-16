@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.infopref.models.Enums.TipoUser;
 import com.example.infopref.models.User;
+import com.example.infopref.models.Enums.TipoUser;
 import com.example.infopref.services.UserService;
 
 import jakarta.validation.Valid;
@@ -43,13 +43,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> postUser(@RequestBody @Valid User obj) {
-        System.out.println();
+    public ResponseEntity<User> postUser(@RequestBody @Valid User obj) {
         obj.setProfile(TipoUser.TECNICO);
-        this.userService.create(obj);
+        User createdUser = this.userService.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(createdUser);
     }
 
     @PostMapping("/solicitante")

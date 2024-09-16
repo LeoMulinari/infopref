@@ -1,5 +1,6 @@
 package com.example.infopref.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.infopref.models.Departamento;
 import com.example.infopref.models.Equipamento;
+import com.example.infopref.models.Secretaria;
 import com.example.infopref.models.DTO.DepartamentoDTO;
 import com.example.infopref.repositories.DepartamentoRepository;
 import com.example.infopref.repositories.EquipamentoRepository;
@@ -52,17 +54,24 @@ public class DepartamentoService {
 
     @Transactional
     public Departamento create(DepartamentoDTO dto) {
-        userService.VerificaADMeTec();
+        // userService.VerificaADMeTec();
         Departamento departamento = new Departamento();
         departamento.setNome(dto.getNome());
         departamento.setFone(dto.getFone());
-        departamento.setSecretaria(secretariaRepository.findById(dto.getSecretariaId()).orElseThrow());
+        // departamento.setSecretaria(secretariaRepository.findById(dto.getSecretariaId()).orElseThrow());
 
-        // Associando equipamentos
-        List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
-                .findAllById(dto.getEquipamentosIds());
-        departamento.setEquipamentos(equipamentos);
+        // Buscar a secretaria existente com base no ID enviado
+        Secretaria secretaria = secretariaRepository.findById(dto.getSecretariaId())
+                .orElseThrow(() -> new RuntimeException("Secretaria não encontrada"));
+        departamento.setSecretaria(secretaria);
 
+        /*
+         * Associando equipamentos
+         * List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
+         * .findAllById(dto.getEquipamentosIds());
+         * departamento.setEquipamentos(equipamentos);
+         */
+        departamento.setEquipamentos(new ArrayList<>()); // Equipamentos vazios na criação
         return departamentoRepository.save(departamento);
     }
 

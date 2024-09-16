@@ -21,6 +21,10 @@ public class EquipamentoService {
         return equipamentoRepository.findAll();
     }
 
+    public List<Equipamento> findByDepartamento(Long id) {
+        return equipamentoRepository.findByDepartamento(id);
+    }
+
     public Equipamento findById(Long id) {
         userService.VerificaADMeTec();
         Optional<Equipamento> obj = this.equipamentoRepository.findById(id);

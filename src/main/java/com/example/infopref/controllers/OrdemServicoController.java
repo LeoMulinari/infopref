@@ -22,7 +22,7 @@ import com.example.infopref.services.OrdemServicoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/ordemServico") // http://localhost:8080/ordemServico
+@RequestMapping("/osmenu") // http://localhost:8080/ordemServico
 @Validated
 public class OrdemServicoController {
     @Autowired
