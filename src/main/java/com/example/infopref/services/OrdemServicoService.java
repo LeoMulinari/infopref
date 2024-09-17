@@ -80,6 +80,7 @@ public class OrdemServicoService {
         UserSpringSecurity userSpringSecurity = userService.authenticated();
         if (!Objects.nonNull(userSpringSecurity))
             throw new AuthorizationException("Acesso negado!");
+
         OrdemServico ordemServico = new OrdemServico();
         ordemServico.setStatus(dto.getStatus());
         ordemServico.setTipo_chamado(dto.getTipo_chamado());
@@ -87,6 +88,9 @@ public class OrdemServicoService {
         ordemServico.setPrioridade(dto.getPrioridade());
         ordemServico.setData_abertura(dto.getData_abertura());
         ordemServico.setData_finalizacao(dto.getData_finalizacao());
+        if (dto.getData_abertura().after(dto.getData_finalizacao())) {
+            throw new RuntimeException("A data de abertura não pode ser posterior à data de finalização.");
+        }
 
         // Setando as entidades relacionadas
         ordemServico.setSolicitante(solicitanteRepository.findById(dto.getCod_sol()).orElseThrow());
