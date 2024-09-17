@@ -1,11 +1,9 @@
 package com.example.infopref.controllers;
 
 import java.net.URI;
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,10 +52,11 @@ public class EquipamentoController {
     @PostMapping("/equipamentodep")
     public ResponseEntity<Void> postEquipamento(
             @RequestBody @Valid EquipamentoDTO equipamentoDTO,
-            @RequestParam Long departamentoId,
-            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date data_aquisicao) {
+            @RequestParam Long departamentoId) {
+
         System.out.println(
-                "POST Equipamento: Departamento ID = " + departamentoId + ", Data Aquisicao = " + data_aquisicao);
+                "POST Equipamento: Departamento ID = " + departamentoId + ", Data Aquisicao = "
+                        + equipamentoDTO.getData_aquisicao());
         Equipamento obj = new Equipamento();
         // Configurar obj com os dados do DTO
         obj.setNum_patrimonio(equipamentoDTO.getNum_patrimonio());
@@ -65,7 +64,7 @@ public class EquipamentoController {
         obj.setMarca(equipamentoDTO.getMarca());
         obj.setDescr_tec(equipamentoDTO.getDescr_tec());
 
-        equipamentoService.create(obj, departamentoId, data_aquisicao);
+        equipamentoService.create(obj, departamentoId, equipamentoDTO.getData_aquisicao());
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();

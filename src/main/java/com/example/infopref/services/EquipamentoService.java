@@ -29,7 +29,8 @@ public class EquipamentoService {
     UserService userService;
 
     public List<Equipamento> findAll() {
-        return equipamentoRepository.findAll();
+        System.out.println(equipamentoRepository.findAllWithDepartamento());
+        return equipamentoRepository.findAllWithDepartamento();
     }
 
     public List<Equipamento> findByDepartamento(Long id) {

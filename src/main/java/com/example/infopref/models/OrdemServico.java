@@ -39,10 +39,6 @@ public class OrdemServico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "num_protocolo", unique = true, nullable = false, updatable = false, length = 20) // rever update
-    @NotBlank
-    private String num_protocolo;
-
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "status", unique = false, nullable = false, updatable = true)
@@ -87,10 +83,6 @@ public class OrdemServico {
     @ManyToOne
     @JoinColumn(name = "cod_tec", nullable = false)
     private Tecnico tecnico;
-
-    @ManyToOne
-    @JoinColumn(name = "cod_usuario", nullable = false)
-    private User user;
 
     @ManyToMany
     @JoinTable(name = "equip_os", joinColumns = @JoinColumn(name = "cod_os"), inverseJoinColumns = @JoinColumn(name = "cod_equip"))
