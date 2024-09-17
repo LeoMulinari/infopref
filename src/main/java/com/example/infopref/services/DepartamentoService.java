@@ -65,9 +65,9 @@ public class DepartamentoService {
                 .orElseThrow(() -> new RuntimeException("Secretaria não encontrada"));
         departamento.setSecretaria(secretaria);
 
-        List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
-                .findAllById(dto.getEquipamentosIds());
-        departamento.setEquipamentos(equipamentos);
+       // List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
+         //       .findAllById(dto.getEquipamentosIds());
+       // departamento.setEquipamentos(equipamentos);
 
         departamento.setEquipamentos(new ArrayList<>()); // Equipamentos vazios na
 

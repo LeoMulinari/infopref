@@ -39,7 +39,7 @@ public class Solicitante {
 
     @Column(name = "id_acesso_remoto", unique = true, nullable = false, updatable = true) // rever update
     @NotNull
-    private Long id_acesso_remoto;
+    private String id_acesso_remoto;
 
     @ManyToOne
     @JoinColumn(name = "cod_usuario", nullable = false)
