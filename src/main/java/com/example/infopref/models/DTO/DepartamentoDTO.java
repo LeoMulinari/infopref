@@ -10,5 +10,4 @@ public class DepartamentoDTO {
     private String nome;
     private String fone;
     private Long secretariaId;
-    private Set<Long> equipamentosIds;
 }
