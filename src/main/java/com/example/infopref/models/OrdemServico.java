@@ -19,7 +19,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -73,7 +72,6 @@ public class OrdemServico {
 
     @Column(name = "data_finalizacao", unique = false, nullable = false, updatable = true)
     @NotNull
-    @FutureOrPresent
     private Date data_finalizacao;
 
     @ManyToOne
