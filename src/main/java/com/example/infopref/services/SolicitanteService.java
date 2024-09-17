@@ -25,6 +25,11 @@ public class SolicitanteService {
         return solicitanteRepository.findAll();
     }
 
+    public Solicitante findByUserId(Long userId) {
+        return solicitanteRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Solicitante não encontrado para o User ID: " + userId));
+    }
+
     public Solicitante findById(Long id) {
         userService.VerificaADMeTec();
         Optional<Solicitante> obj = this.solicitanteRepository.findById(id);

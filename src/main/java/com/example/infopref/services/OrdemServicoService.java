@@ -68,7 +68,7 @@ public class OrdemServicoService {
     }
 
     public List<OrdemServico> findAllByCod_sol(Long cod_sol) {
-        userService.VerificaADMeTec();
+        // userService.VerificaADMeTec();
         this.solicitanteRepository.findById(cod_sol);
         List<OrdemServico> listSol = this.ordemServicoRepository.findAllBySolicitante_Id(cod_sol);
 
@@ -88,13 +88,23 @@ public class OrdemServicoService {
         ordemServico.setPrioridade(dto.getPrioridade());
         ordemServico.setData_abertura(dto.getData_abertura());
         ordemServico.setData_finalizacao(dto.getData_finalizacao());
-        if (dto.getData_abertura().after(dto.getData_finalizacao())) {
-            throw new RuntimeException("A data de abertura não pode ser posterior à data de finalização.");
-        }
+        /*
+         * if (dto.getData_abertura().after(dto.getData_finalizacao())) {
+         * throw new
+         * RuntimeException("A data de abertura não pode ser posterior à data de finalização."
+         * );
+         * }
+         */
 
         // Setando as entidades relacionadas
         ordemServico.setSolicitante(solicitanteRepository.findById(dto.getCod_sol()).orElseThrow());
-        ordemServico.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
+
+        // Apenas seta o técnico se o dto contiver o cod_tec
+        if (dto.getCod_tec() != null) {
+            ordemServico.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
+        }
+
+        return ordemServicoRepository.save(ordemServico);
 
         // Buscando e associando os equipamentos
         /*
@@ -103,7 +113,6 @@ public class OrdemServicoService {
          * ordemServico.setEquipamentos(equipamentos);
          */
 
-        return ordemServicoRepository.save(ordemServico);
     }
 
     @Transactional

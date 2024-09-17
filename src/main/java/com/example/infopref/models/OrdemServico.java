@@ -79,7 +79,7 @@ public class OrdemServico {
     private Solicitante solicitante;
 
     @ManyToOne
-    @JoinColumn(name = "cod_tec", nullable = false)
+    @JoinColumn(name = "cod_tec", nullable = true)
     private Tecnico tecnico;
 
     @ManyToMany

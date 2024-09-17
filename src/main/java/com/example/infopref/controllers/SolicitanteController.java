@@ -33,6 +33,12 @@ public class SolicitanteController {
         return ResponseEntity.ok().body(solicitanteService.findAll());
     }
 
+    @GetMapping("/usuario/{userId}")
+    public ResponseEntity<Solicitante> getSolicitanteByUserId(@PathVariable("userId") Long userId) {
+        Solicitante obj = this.solicitanteService.findByUserId(userId);
+        return ResponseEntity.ok().body(obj);
+    }
+
     @GetMapping("/{id}") // http://localhost:8080/solicitante/2
     public ResponseEntity<Solicitante> getSolicitanteById(@PathVariable("id") Long id) {
         Solicitante obj = this.solicitanteService.findById(id);
