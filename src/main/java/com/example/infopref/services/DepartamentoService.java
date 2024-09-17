@@ -65,13 +65,12 @@ public class DepartamentoService {
                 .orElseThrow(() -> new RuntimeException("Secretaria não encontrada"));
         departamento.setSecretaria(secretaria);
 
-        /*
-         * Associando equipamentos
-         * List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
-         * .findAllById(dto.getEquipamentosIds());
-         * departamento.setEquipamentos(equipamentos);
-         */
-        departamento.setEquipamentos(new ArrayList<>()); // Equipamentos vazios na criação
+        List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
+                .findAllById(dto.getEquipamentosIds());
+        departamento.setEquipamentos(equipamentos);
+
+        departamento.setEquipamentos(new ArrayList<>()); // Equipamentos vazios na
+
         return departamentoRepository.save(departamento);
     }
 
@@ -86,7 +85,7 @@ public class DepartamentoService {
 
         List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
                 .findAllById(dto.getEquipamentosIds());
-        departamento.setEquipamentos(equipamentos);
+        // departamento.setEquip_dep(equipamentos);
 
         return departamentoRepository.save(departamento);
     }

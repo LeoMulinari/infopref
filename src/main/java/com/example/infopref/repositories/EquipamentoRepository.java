@@ -13,4 +13,7 @@ import com.example.infopref.models.Equipamento;
 public interface EquipamentoRepository extends JpaRepository<Equipamento, Long> {
     @Query("SELECT e FROM Equipamento e JOIN e.departamentos d WHERE d.id = :id")
     List<Equipamento> findByDepartamento(@Param("id") Long id);
+
+    @Query("SELECT e FROM Equipamento e JOIN e.departamentos")
+    List<Equipamento> findAllWithDepartamento();
 }

@@ -12,7 +12,6 @@ import lombok.Data;
 @Data
 public class OrdemServicoDTO {
     private Long id;
-    private String num_protocolo;
     private StatusOS status;
     private String tipo_chamado;
     private String descricao;
@@ -20,9 +19,8 @@ public class OrdemServicoDTO {
     private String resolucao;
     private Date data_abertura;
     private Date data_finalizacao;
-    private Long solicitanteId;
-    private Long tecnicoId;
-    private Long userId;
+    private Long cod_sol;
+    private Long cod_tec;
     private Set<Long> equipamentosIds;
     private Map<Long, Date> dataEntregaMap;
 }

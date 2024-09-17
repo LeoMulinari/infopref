@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.infopref.models.Departamento;
 import com.example.infopref.models.Solicitante;
 import com.example.infopref.repositories.SolicitanteRepository;
 
@@ -35,17 +36,20 @@ public class SolicitanteService {
     }
 
     public List<Solicitante> findAllByCod_dep(Long cod_dep) {
-        this.departamentoService.findById(cod_dep);
-        List<Solicitante> listDep = this.solicitanteRepository.findAllByDepartamento_Id(cod_dep);
-
-        return listDep;
+        departamentoService.findById(cod_dep); // Certifique-se que o departamento existe
+        return solicitanteRepository.findAllByDepartamento_Id(cod_dep);
     }
 
     public Solicitante create(Solicitante obj) {
         userService.VerificaADMeTec();
         obj.setId(null);
 
-        return this.solicitanteRepository.save(obj);
+        // Buscando o departamento pelo ID para garantir que a secretaria seja associada
+        // automaticamente
+        Departamento departamento = departamentoService.findById(obj.getDepartamento().getId());
+        obj.setDepartamento(departamento); // Associa o departamento ao solicitante
+
+        return solicitanteRepository.save(obj);
     }
 
     public Solicitante update(Solicitante newObj) {
@@ -54,6 +58,10 @@ public class SolicitanteService {
         obj.setNome(newObj.getNome());
         obj.setFone(newObj.getFone());
         obj.setId_acesso_remoto(newObj.getId_acesso_remoto());
+
+        // Atualizando o departamento e a secretaria
+        Departamento departamento = departamentoService.findById(newObj.getDepartamento().getId());
+        obj.setDepartamento(departamento); // Associando departamento atualizado
 
         return this.solicitanteRepository.save(obj);
     }

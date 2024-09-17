@@ -1,16 +1,12 @@
 package com.example.infopref.services;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.infopref.models.Equip_os;
-import com.example.infopref.models.Equipamento;
 import com.example.infopref.models.OrdemServico;
 import com.example.infopref.models.DTO.OrdemServicoDTO;
 import com.example.infopref.repositories.Equip_osRepository;
@@ -85,7 +81,6 @@ public class OrdemServicoService {
         if (!Objects.nonNull(userSpringSecurity))
             throw new AuthorizationException("Acesso negado!");
         OrdemServico ordemServico = new OrdemServico();
-        ordemServico.setNum_protocolo(dto.getNum_protocolo());
         ordemServico.setStatus(dto.getStatus());
         ordemServico.setTipo_chamado(dto.getTipo_chamado());
         ordemServico.setDescricao(dto.getDescricao());
@@ -94,14 +89,15 @@ public class OrdemServicoService {
         ordemServico.setData_finalizacao(dto.getData_finalizacao());
 
         // Setando as entidades relacionadas
-        ordemServico.setSolicitante(solicitanteRepository.findById(dto.getSolicitanteId()).orElseThrow());
-        ordemServico.setTecnico(tecnicoRepository.findById(dto.getTecnicoId()).orElseThrow());
-        ordemServico.setUser(userRepository.findById(dto.getUserId()).orElseThrow());
+        ordemServico.setSolicitante(solicitanteRepository.findById(dto.getCod_sol()).orElseThrow());
+        ordemServico.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
 
         // Buscando e associando os equipamentos
-        List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
-                .findAllById(dto.getEquipamentosIds());
-        ordemServico.setEquipamentos(equipamentos);
+        /*
+         * List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
+         * .findAllById(dto.getEquipamentosIds());
+         * ordemServico.setEquipamentos(equipamentos);
+         */
 
         return ordemServicoRepository.save(ordemServico);
     }
@@ -124,26 +120,29 @@ public class OrdemServicoService {
         obj = ordemServicoRepository.save(obj);
 
         // Atualiza ou cria os registros equip_os com as datas de entrega
-        for (Map.Entry<Long, Date> entry : dto.getDataEntregaMap().entrySet()) {
-            Long equipamentoId = entry.getKey();
-            Date dataEntrega = entry.getValue();
-
-            // Encontra o Equipamento
-            Equipamento equipamento = equipamentoRepository.findById(equipamentoId)
-                    .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
-
-            // Encontra ou cria o Equip_os correspondente
-            Equip_os equipOs = equipOsRepository.findByOrdemServicoAndEquipamento(obj, equipamento)
-                    .orElse(new Equip_os());
-
-            // Atualiza a data de entrega
-            equipOs.setData_entrega(dataEntrega);
-            equipOs.setEquipamento(equipamento);
-            equipOs.setOrdemServico(obj);
-
-            // Salva a instância de Equip_os
-            equipOsRepository.save(equipOs);
-        }
+        /*
+         * for (Map.Entry<Long, Date> entry : dto.getDataEntregaMap().entrySet()) {
+         * Long equipamentoId = entry.getKey();
+         * Date dataEntrega = entry.getValue();
+         * 
+         * // Encontra o Equipamento
+         * Equipamento equipamento = equipamentoRepository.findById(equipamentoId)
+         * .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
+         * 
+         * // Encontra ou cria o Equip_os correspondente
+         * Equip_os equipOs = equipOsRepository.findByOrdemServicoAndEquipamento(obj,
+         * equipamento)
+         * .orElse(new Equip_os());
+         * 
+         * // Atualiza a data de entrega
+         * equipOs.setData_entrega(dataEntrega);
+         * equipOs.setEquipamento(equipamento);
+         * equipOs.setOrdemServico(obj);
+         * 
+         * // Salva a instância de Equip_os
+         * equipOsRepository.save(equipOs);
+         * }
+         */
 
         return obj;
 
