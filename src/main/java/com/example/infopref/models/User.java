@@ -33,7 +33,7 @@ public class User {
 
     @Column(name = "login", unique = true, nullable = false, updatable = false, length = 30)
     @NotBlank
-    @Size(min = 5, max = 30)
+    @Size(min = 3, max = 30)
     private String username;
 
     @Column(name = "password", nullable = false, updatable = true)
