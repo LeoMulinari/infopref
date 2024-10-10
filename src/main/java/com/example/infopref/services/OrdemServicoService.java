@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.infopref.models.OrdemServico;
 import com.example.infopref.models.DTO.OrdemServicoDTO;
+import com.example.infopref.models.Enums.TipoUser;
 import com.example.infopref.repositories.Equip_osRepository;
 import com.example.infopref.repositories.EquipamentoRepository;
 import com.example.infopref.repositories.OrdemServicoRepository;
@@ -53,7 +54,9 @@ public class OrdemServicoService {
             throw new RuntimeException("Ordem de Serviço não encontrada {id:" + id + "}");
         }
         UserSpringSecurity userSpringSecurity = userService.authenticated();
-        if (!Objects.nonNull(userSpringSecurity) || !id.equals(obj.get().getSolicitante().getId()))
+        if (!Objects.nonNull(userSpringSecurity) ||
+                !id.equals(obj.get().getSolicitante().getId()) &&
+                        !userSpringSecurity.hasRole(TipoUser.ADM) && !userSpringSecurity.hasRole(TipoUser.TECNICO))
             throw new AuthorizationException("Acesso negado!");
         return obj.get();
 
@@ -162,7 +165,7 @@ public class OrdemServicoService {
     }
 
     public void deleteById(Long id) {
-        userService.VerificaADMeTec();
+        // userService.VerificaADMeTec();
         findById(id);
         try {
             this.ordemServicoRepository.deleteById(id);

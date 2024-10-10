@@ -70,7 +70,7 @@ public class OrdemServico {
     @NotNull
     private Date data_abertura;
 
-    @Column(name = "data_finalizacao", unique = false, nullable = false, updatable = true)
+    @Column(name = "data_finalizacao", unique = false, nullable = true, updatable = true)
     @NotNull
     private Date data_finalizacao;
 
