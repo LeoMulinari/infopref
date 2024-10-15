@@ -71,7 +71,6 @@ public class OrdemServico {
     private Date data_abertura;
 
     @Column(name = "data_finalizacao", unique = false, nullable = true, updatable = true)
-    @NotNull
     private Date data_finalizacao;
 
     @ManyToOne

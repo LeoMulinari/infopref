@@ -90,7 +90,10 @@ public class OrdemServicoService {
         ordemServico.setDescricao(dto.getDescricao());
         ordemServico.setPrioridade(dto.getPrioridade());
         ordemServico.setData_abertura(dto.getData_abertura());
-        ordemServico.setData_finalizacao(dto.getData_finalizacao());
+
+        if (dto.getData_finalizacao() != null) {
+            ordemServico.setData_finalizacao(dto.getData_finalizacao());
+        }
         /*
          * if (dto.getData_abertura().after(dto.getData_finalizacao())) {
          * throw new
