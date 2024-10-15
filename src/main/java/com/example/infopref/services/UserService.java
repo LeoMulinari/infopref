@@ -9,8 +9,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.infopref.models.Enums.TipoUser;
 import com.example.infopref.models.User;
+import com.example.infopref.models.Enums.TipoUser;
 import com.example.infopref.repositories.UserRepository;
 import com.example.infopref.security.UserSpringSecurity;
 import com.example.infopref.services.exceptions.AuthorizationException;
@@ -31,7 +31,7 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        //VerificaADM(); arrumar pra adm buscar todos e usuario buscar só a si mesmo
+        // VerificaADM(); arrumar pra adm buscar todos e usuario buscar só a si mesmo
 
         Optional<User> obj = this.userRepository.findById(id);
         if (obj.isPresent()) {
@@ -56,11 +56,19 @@ public class UserService {
     }
 
     public User create(User obj) {
-        VerificaADM();
+        // VerificaADM();
         obj.setId(null);
         obj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
-        System.out.println(obj.toString());
+        // Verificação explícita para garantir que o TipoUser está correto
+        if (obj.getProfile() == TipoUser.TECNICO) {
+            obj.setProfile(TipoUser.TECNICO);
+        } else if (obj.getProfile() == TipoUser.ADM) {
+            obj.setProfile(TipoUser.ADM);
+        } else {
+            obj.setProfile(TipoUser.SOLICITANTE);
+        }
 
+        System.out.println("Criando usuário com perfil: " + obj.getProfile());
         return this.userRepository.save(obj);
     }
 

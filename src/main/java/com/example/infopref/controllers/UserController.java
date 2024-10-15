@@ -52,12 +52,12 @@ public class UserController {
     }
 
     @PostMapping("/solicitante")
-    public ResponseEntity<Void> postUserSolicitante(@RequestBody @Valid User obj) {
+    public ResponseEntity<User> postUserSolicitante(@RequestBody @Valid User obj) {
         obj.setProfile(TipoUser.SOLICITANTE);
-        this.userService.create(obj);
+        User createdUser = this.userService.create(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(createdUser);
     }
 
     @PutMapping("/{id}")
