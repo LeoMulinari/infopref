@@ -134,6 +134,14 @@ public class OrdemServicoService {
         obj.setData_abertura(dto.getData_abertura());
         obj.setData_finalizacao(dto.getData_finalizacao());
 
+        if (dto.getCod_sol() != null) {
+            obj.setSolicitante(solicitanteRepository.findById(dto.getCod_sol()).orElseThrow());
+        }
+
+        if (dto.getCod_tec() != null) {
+            obj.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
+        }
+
         // Atualiza os equipamentos e suas datas de entrega
         // Primeiramente, salvamos a ordem de serviço
         obj = ordemServicoRepository.save(obj);
