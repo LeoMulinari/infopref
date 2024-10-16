@@ -1,7 +1,5 @@
 package com.example.infopref.models.DTO;
 
-import java.util.Set;
-
 import lombok.Data;
 
 @Data
