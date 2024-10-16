@@ -25,7 +25,7 @@ public class Secretaria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", unique = false, nullable = false, updatable = true, length = 50)
+    @Column(name = "nome", unique = true, nullable = false, updatable = true, length = 50)
     @NotBlank
     private String nome;
 

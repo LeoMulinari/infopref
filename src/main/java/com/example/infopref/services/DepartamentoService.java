@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.example.infopref.models.Departamento;
 import com.example.infopref.models.Secretaria;
+import com.example.infopref.models.Solicitante;
 import com.example.infopref.models.DTO.DepartamentoDTO;
 import com.example.infopref.repositories.DepartamentoRepository;
 import com.example.infopref.repositories.EquipamentoRepository;
 import com.example.infopref.repositories.SecretariaRepository;
+import com.example.infopref.repositories.SolicitanteRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -23,6 +25,9 @@ public class DepartamentoService {
 
     @Autowired
     SecretariaRepository secretariaRepository;
+
+    @Autowired
+    SolicitanteRepository solicitanteRepository;
 
     @Autowired
     private EquipamentoRepository equipamentoRepository;
@@ -89,6 +94,13 @@ public class DepartamentoService {
 
     public void deleteById(Long id) {
         findById(id);
+
+        // Verificar se existem solicitantes associados
+        List<Solicitante> solicitantes = solicitanteRepository.findAllByDepartamento_Id(id);
+        if (!solicitantes.isEmpty()) {
+            throw new RuntimeException(
+                    "Não é possível excluir este departamento, pois ele está associado a solicitantes.");
+        }
         try {
             this.departamentoRepository.deleteById(id);
         } catch (Exception e) {
