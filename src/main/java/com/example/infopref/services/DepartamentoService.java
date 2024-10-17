@@ -12,7 +12,6 @@ import com.example.infopref.models.Secretaria;
 import com.example.infopref.models.Solicitante;
 import com.example.infopref.models.DTO.DepartamentoDTO;
 import com.example.infopref.repositories.DepartamentoRepository;
-import com.example.infopref.repositories.EquipamentoRepository;
 import com.example.infopref.repositories.SecretariaRepository;
 import com.example.infopref.repositories.SolicitanteRepository;
 
@@ -28,9 +27,6 @@ public class DepartamentoService {
 
     @Autowired
     SolicitanteRepository solicitanteRepository;
-
-    @Autowired
-    private EquipamentoRepository equipamentoRepository;
 
     @Autowired
     UserService userService;

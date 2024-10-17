@@ -1,5 +1,6 @@
 package com.example.infopref.services;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +75,23 @@ public class Equip_depService {
         obj.setData_aquisicao(newObj.getData_aquisicao());
 
         return this.equip_depRepository.save(obj);
+    }
+
+    public void alterarDepartamento(Long equipamentoId, Long novoDepartamentoId, Date novaDataAquisicao) {
+        List<Equip_dep> equipDepList = equip_depRepository.findByEquipamentoId(equipamentoId);
+
+        if (equipDepList.isEmpty()) {
+            throw new RuntimeException("Equipamento não encontrado");
+        }
+
+        // Supondo que deseja modificar o primeiro item encontrado na lista
+        Equip_dep equipDep = equipDepList.get(0);
+
+        Departamento novoDepartamento = departamentoService.findById(novoDepartamentoId);
+        equipDep.setDepartamento(novoDepartamento);
+        equipDep.setData_aquisicao(novaDataAquisicao);
+
+        equip_depRepository.save(equipDep);
     }
 
     public void deleteByEquipamento_IdAndDepartamento_Id(Long equipamento_id, Long departamento_id) {

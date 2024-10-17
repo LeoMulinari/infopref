@@ -33,15 +33,6 @@ public class OrdemServicoService {
     SolicitanteRepository solicitanteRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private EquipamentoRepository equipamentoRepository;
-
-    @Autowired
-    private Equip_osRepository equipOsRepository;
-
-    @Autowired
     UserService userService;
 
     public List<OrdemServico> findAll() {

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.infopref.models.Equipamento;
+import com.example.infopref.models.DTO.AlterarDepartamentoDTO;
 import com.example.infopref.models.DTO.EquipamentoDTO;
 import com.example.infopref.services.Equip_depService;
 import com.example.infopref.services.EquipamentoService;
@@ -81,6 +82,14 @@ public class EquipamentoController {
         System.out.println(id);
         newObj.setId(id);
         this.equipamentoService.update(newObj);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/alterar-departamento")
+    public ResponseEntity<Void> alterarDepartamento(
+            @PathVariable("id") Long id,
+            @RequestBody AlterarDepartamentoDTO dto) {
+        equip_depService.alterarDepartamento(id, dto.getNovoDepartamentoId(), dto.getNovaDataAquisicao());
         return ResponseEntity.noContent().build();
     }
 
