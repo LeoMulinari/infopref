@@ -59,10 +59,11 @@ public class OrdemServico {
     @Column(name = "prioridade", unique = false, nullable = false, updatable = true)
     private Prioridade prioridade;
 
-    @Column(name = "resolucao", unique = false, nullable = false, updatable = true, length = 255)
+    @Column(name = "resolucao", unique = false, nullable = true, updatable = true, length = 255)
     private String resolucao = "Não definida"; // Valor padrão
 
     public void setResolucao(String resolucao) {
+        System.out.println("Valor recebido para resolucao: " + resolucao);
         this.resolucao = (resolucao == null || resolucao.isEmpty()) ? "Não definida" : resolucao;
     }
 

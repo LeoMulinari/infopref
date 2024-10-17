@@ -88,6 +88,10 @@ public class OrdemServicoService {
         if (dto.getData_finalizacao() != null) {
             ordemServico.setData_finalizacao(dto.getData_finalizacao());
         }
+
+        if (dto.getResolucao() != null) {
+            ordemServico.setResolucao(dto.getResolucao());
+        }
         /*
          * if (dto.getData_abertura().after(dto.getData_finalizacao())) {
          * throw new
