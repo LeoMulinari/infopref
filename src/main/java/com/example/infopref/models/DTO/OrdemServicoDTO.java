@@ -1,6 +1,7 @@
 package com.example.infopref.models.DTO;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.example.infopref.models.Enums.Prioridade;
 import com.example.infopref.models.Enums.StatusOS;
@@ -19,6 +20,6 @@ public class OrdemServicoDTO {
     private Date data_finalizacao;
     private Long cod_sol;
     private Long cod_tec;
-    // private Set<Long> equipamentosIds;
+    private List<Long> equipamentosIds;
     // private Map<Long, Date> dataEntregaMap;
 }

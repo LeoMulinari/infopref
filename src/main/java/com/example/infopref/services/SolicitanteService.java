@@ -40,6 +40,12 @@ public class SolicitanteService {
         throw new RuntimeException("Solicitante não encontrado {id:" + id + "}");
     }
 
+    public Departamento findDepartamentoBySolicitanteId(Long solicitanteId) {
+        Solicitante solicitante = solicitanteRepository.findById(solicitanteId)
+                .orElseThrow(() -> new RuntimeException("Solicitante não encontrado"));
+        return solicitante.getDepartamento(); // Assumindo que Solicitante tem um relacionamento com Departamento
+    }
+
     public List<Solicitante> findAllByCod_dep(Long cod_dep) {
         departamentoService.findById(cod_dep); // Certifique-se que o departamento existe
         return solicitanteRepository.findAllByDepartamento_Id(cod_dep);

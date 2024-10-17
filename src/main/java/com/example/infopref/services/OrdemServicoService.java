@@ -7,15 +7,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.infopref.models.Equipamento;
 import com.example.infopref.models.OrdemServico;
 import com.example.infopref.models.DTO.OrdemServicoDTO;
 import com.example.infopref.models.Enums.TipoUser;
-import com.example.infopref.repositories.Equip_osRepository;
 import com.example.infopref.repositories.EquipamentoRepository;
 import com.example.infopref.repositories.OrdemServicoRepository;
 import com.example.infopref.repositories.SolicitanteRepository;
 import com.example.infopref.repositories.TecnicoRepository;
-import com.example.infopref.repositories.UserRepository;
 import com.example.infopref.security.UserSpringSecurity;
 import com.example.infopref.services.exceptions.AuthorizationException;
 
@@ -34,6 +33,9 @@ public class OrdemServicoService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EquipamentoRepository equipamentoRepository;
 
     public List<OrdemServico> findAll() {
         return ordemServicoRepository.findAll();
@@ -71,6 +73,7 @@ public class OrdemServicoService {
 
     @Transactional
     public OrdemServico create(OrdemServicoDTO dto) {
+        System.out.println("Equipamentos IDs recebidos: " + dto.getEquipamentosIds());
         UserSpringSecurity userSpringSecurity = userService.authenticated();
         if (!Objects.nonNull(userSpringSecurity))
             throw new AuthorizationException("Acesso negado!");
@@ -100,15 +103,15 @@ public class OrdemServicoService {
         if (dto.getCod_tec() != null) {
             ordemServico.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
         }
+        // Buscando e associando os equipamentos
+        if (dto.getEquipamentosIds() == null || dto.getEquipamentosIds().isEmpty()) {
+            throw new RuntimeException("IDs de equipamentos são obrigatórios");
+        }
+
+        List<Equipamento> equipamentos = equipamentoRepository.findAllById(dto.getEquipamentosIds());
+        ordemServico.setEquipamentos(equipamentos);
 
         return ordemServicoRepository.save(ordemServico);
-
-        // Buscando e associando os equipamentos
-        /*
-         * List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
-         * .findAllById(dto.getEquipamentosIds());
-         * ordemServico.setEquipamentos(equipamentos);
-         */
 
     }
 
@@ -132,6 +135,11 @@ public class OrdemServicoService {
         if (dto.getCod_tec() != null) {
             obj.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
         }
+
+        // Atualiza os equipamentos associados
+        // List<Equipamento> equipamentos =
+        // equipamentoRepository.findAllById(dto.getEquipamentosIds());
+        // obj.setEquipamentos(equipamentos);
 
         // Atualiza os equipamentos e suas datas de entrega
         // Primeiramente, salvamos a ordem de serviço

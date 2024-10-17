@@ -48,11 +48,10 @@ public class EquipamentoController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @GetMapping("/departamento/{id}")
-    public ResponseEntity<List<EquipamentoDTO>> getEquipamentosByDepartamento(
-            @PathVariable("id") Long id) {
-        List<EquipamentoDTO> equipamentosDTO = equipamentoService.findByDepartamentoWithDataAquisicao(id);
-        return ResponseEntity.ok().body(equipamentosDTO);
+    @GetMapping("/departamento/{departamentoId}")
+    public ResponseEntity<List<EquipamentoDTO>> getEquipamentosByDepartamento(@PathVariable Long departamentoId) {
+        List<EquipamentoDTO> equipamentos = equipamentoService.findByDepartamentoWithDataAquisicao(departamentoId);
+        return ResponseEntity.ok(equipamentos);
     }
 
     @PostMapping("/equipamentodep")
