@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.infopref.models.Equipamento;
 import com.example.infopref.models.DTO.EquipamentoDTO;
+import com.example.infopref.services.Equip_depService;
 import com.example.infopref.services.EquipamentoService;
 
 import jakarta.validation.Valid;
@@ -30,9 +31,13 @@ public class EquipamentoController {
     @Autowired
     EquipamentoService equipamentoService;
 
+    @Autowired
+    Equip_depService equip_depService;
+
     @GetMapping
-    public ResponseEntity<List<Equipamento>> getEquipamento() {
-        return ResponseEntity.ok().body(equipamentoService.findAll());
+    public ResponseEntity<List<EquipamentoDTO>> getEquipamento() {
+        List<EquipamentoDTO> equipamentosDTO = equipamentoService.findAllWithDataAquisicao();
+        return ResponseEntity.ok().body(equipamentosDTO);
     }
 
     @GetMapping("/{id}") // http://localhost:8080/equipamento/2
@@ -43,10 +48,10 @@ public class EquipamentoController {
     }
 
     @GetMapping("/departamento/{id}")
-    public ResponseEntity<List<Equipamento>> getEquipamentosByDepartamento(
+    public ResponseEntity<List<EquipamentoDTO>> getEquipamentosByDepartamento(
             @PathVariable("id") Long id) {
-        List<Equipamento> equipamentos = equipamentoService.findByDepartamento(id);
-        return ResponseEntity.ok().body(equipamentos);
+        List<EquipamentoDTO> equipamentosDTO = equipamentoService.findByDepartamentoWithDataAquisicao(id);
+        return ResponseEntity.ok().body(equipamentosDTO);
     }
 
     @PostMapping("/equipamentodep")
@@ -85,4 +90,11 @@ public class EquipamentoController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/equip_dep/equipamento/{id}")
+    public ResponseEntity<Void> deleteEquipDepAssociationsByEquipamentoId(@PathVariable("id") Long id) {
+        this.equip_depService.deleteAssociationsByEquipamentoId(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.infopref.services;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.infopref.models.Departamento;
 import com.example.infopref.models.Equip_dep;
 import com.example.infopref.models.Equipamento;
+import com.example.infopref.models.DTO.EquipamentoDTO;
 import com.example.infopref.repositories.EquipamentoRepository;
 
 @Service
@@ -81,9 +83,41 @@ public class EquipamentoService {
     public void deleteById(Long id) {
         findById(id);
         try {
-            this.equipamentoRepository.deleteById(id);
+            // Remover todas as associações antes de excluir o equipamento
+            equip_depService.deleteAssociationsByEquipamentoId(id);
+
+            // Agora podemos excluir o equipamento
+            equipamentoRepository.deleteById(id);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao deletar equipamento {id:" + id + "}", e);
         }
     }
+
+    public List<EquipamentoDTO> findAllWithDataAquisicao() {
+        List<Equipamento> equipamentos = equipamentoRepository.findAllWithDepartamento();
+        return equipamentos.stream().map(this::convertToDTOWithDataAquisicao).collect(Collectors.toList());
+    }
+
+    public List<EquipamentoDTO> findByDepartamentoWithDataAquisicao(Long id) {
+        List<Equipamento> equipamentos = equipamentoRepository.findByDepartamento(id);
+        return equipamentos.stream().map(this::convertToDTOWithDataAquisicao).collect(Collectors.toList());
+    }
+
+    private EquipamentoDTO convertToDTOWithDataAquisicao(Equipamento equipamento) {
+        EquipamentoDTO dto = new EquipamentoDTO();
+        dto.setId(equipamento.getId());
+        dto.setNum_patrimonio(equipamento.getNum_patrimonio());
+        dto.setModelo(equipamento.getModelo());
+        dto.setMarca(equipamento.getMarca());
+        dto.setDescr_tec(equipamento.getDescr_tec());
+
+        // Obter a data de aquisição associada ao equipamento
+        List<Equip_dep> equipDeps = equip_depService.findByEquipamentoId(equipamento.getId());
+        if (!equipDeps.isEmpty()) {
+            dto.setData_aquisicao(equipDeps.get(0).getData_aquisicao()); // Pega a data do primeiro associado
+        }
+
+        return dto;
+    }
+
 }

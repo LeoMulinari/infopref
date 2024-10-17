@@ -45,6 +45,10 @@ public class Equip_depService {
         return listDep;
     }
 
+    public List<Equip_dep> findByEquipamentoId(Long equipamentoId) {
+        return equip_depRepository.findByEquipamentoId(equipamentoId);
+    }
+
     public Equip_dep create(Equip_dep obj) {
         userService.VerificaADMeTec();
 
@@ -78,6 +82,15 @@ public class Equip_depService {
             this.equip_depRepository.deleteByEquipamento_IdAndDepartamento_Id(equipamento_id, departamento_id);
         } catch (Exception e) {
             new RuntimeException("Erro ao deletar equip_dep {id:" + equipamento_id + departamento_id + "}", e);
+        }
+    }
+
+    public void deleteAssociationsByEquipamentoId(Long equipamentoId) {
+        try {
+            equip_depRepository.deleteByEquipamentoId(equipamentoId);
+        } catch (Exception e) {
+            throw new RuntimeException(
+                    "Erro ao excluir associações de equip_dep para equipamento {id:" + equipamentoId + "}", e);
         }
     }
 }
