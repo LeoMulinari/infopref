@@ -31,7 +31,7 @@ public class SolicitanteService {
     }
 
     public Solicitante findById(Long id) {
-        userService.VerificaADMeTec();
+        // userService.VerificaADMeTec();
         Optional<Solicitante> obj = this.solicitanteRepository.findById(id);
 
         if (obj.isPresent()) {
