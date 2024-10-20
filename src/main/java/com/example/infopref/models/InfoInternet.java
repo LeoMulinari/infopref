@@ -1,8 +1,5 @@
 package com.example.infopref.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,7 +32,7 @@ public class InfoInternet {
 
     @Column(name = "senha", nullable = false, updatable = true, length = 30)
     @NotBlank
-    @JsonProperty(access = Access.WRITE_ONLY)
+    // @JsonProperty(access = Access.WRITE_ONLY)
     private String senha;
 
     @Column(name = "ip", nullable = false, updatable = true, length = 16)

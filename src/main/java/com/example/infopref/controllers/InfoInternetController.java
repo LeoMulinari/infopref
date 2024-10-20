@@ -47,9 +47,9 @@ public class InfoInternetController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @PostMapping
-    public ResponseEntity<Void> postInfoInternet(@RequestBody @Valid InfoInternet obj) {
-        this.infoInternetService.create(obj);
+    @PostMapping("/departamento/{cod_dep}")
+    public ResponseEntity<Void> postInfoInternet(@PathVariable Long cod_dep, @RequestBody @Valid InfoInternet obj) {
+        this.infoInternetService.create(obj, cod_dep);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 
         return ResponseEntity.created(uri).build();

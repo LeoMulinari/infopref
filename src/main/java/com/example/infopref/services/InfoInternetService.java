@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.infopref.models.Departamento;
 import com.example.infopref.models.InfoInternet;
 import com.example.infopref.repositories.InfoInternetRepository;
 
@@ -41,9 +42,13 @@ public class InfoInternetService {
         return listDep;
     }
 
-    public InfoInternet create(InfoInternet obj) {
-        userService.VerificaADMeTec();
+    public InfoInternet create(InfoInternet obj, Long cod_dep) {
+        // userService.VerificaADMeTec();
         obj.setId(null);
+
+        // Associar o departamento à InfoInternet
+        Departamento departamento = this.departamentoService.findById(cod_dep);
+        obj.setDepartamento(departamento);
 
         return this.infoInternetRepository.save(obj);
     }
