@@ -24,17 +24,16 @@ public interface OrdemServicoRepository extends JpaRepository<OrdemServico, Long
                         "LEFT JOIN o.tecnico t " +
                         "WHERE o.data_abertura BETWEEN :dataInicio AND :dataFim AND " +
                         "(:tipoChamado IS NULL OR o.tipo_chamado = :tipoChamado) AND " +
-                        "(:solicitanteNome IS NULL OR s.id = :solicitanteNome) AND " +
-                        "(:departamentoNome IS NULL OR d.id = :departamentoNome) AND " +
-                        "(:secretariaNome IS NULL OR sec.id = :secretariaNome) AND " +
-                        "(:tecnicoNome IS NULL OR t.id = :tecnicoNome)")
+                        "(:solicitanteId IS NULL OR s.id = :solicitanteId) AND " +
+                        "(:departamentoId IS NULL OR d.id = :departamentoId) AND " +
+                        "(:secretariaId IS NULL OR sec.id = :secretariaId) AND " +
+                        "(:tecnicoId IS NULL OR t.id = :tecnicoId)")
         List<OrdemServico> findByDateRangeAndFilters(
                         @Param("dataInicio") Date dataInicio,
                         @Param("dataFim") Date dataFim,
                         @Param("tipoChamado") TipoChamado tipoChamado,
-                        @Param("solicitanteNome") String solicitanteNome,
-                        @Param("departamentoNome") String departamentoNome,
-                        @Param("secretariaNome") String secretariaNome,
-                        @Param("tecnicoNome") String tecnicoNome);
-
+                        @Param("solicitanteId") Long solicitanteId,
+                        @Param("departamentoId") Long departamentoId,
+                        @Param("secretariaId") Long secretariaId,
+                        @Param("tecnicoId") Long tecnicoId);
 }
