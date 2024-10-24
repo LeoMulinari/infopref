@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.example.infopref.models.Enums.Prioridade;
 import com.example.infopref.models.Enums.StatusOS;
+import com.example.infopref.models.Enums.TipoChamado;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -43,9 +43,10 @@ public class OrdemServico {
     @Column(name = "status", unique = false, nullable = false, updatable = true)
     private StatusOS status;
 
-    @Column(name = "tipo_chamado", unique = false, nullable = false, updatable = true, length = 100)
-    @NotBlank
-    private String tipo_chamado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_chamado", unique = false, nullable = false, updatable = true)
+    @NotNull
+    private TipoChamado tipo_chamado;
 
     @Column(name = "descricao", unique = false, nullable = false, updatable = true, length = 255)
     private String descricao = "Nenhuma descrição fornecida"; // Valor padrão

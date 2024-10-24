@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.infopref.models.Enums.Prioridade;
 import com.example.infopref.models.Enums.StatusOS;
+import com.example.infopref.models.Enums.TipoChamado;
 
 import lombok.Data;
 
@@ -12,7 +13,7 @@ import lombok.Data;
 public class OrdemServicoDTO {
     private Long id;
     private StatusOS status;
-    private String tipo_chamado;
+    private TipoChamado tipo_chamado;
     private String descricao;
     private Prioridade prioridade;
     private String resolucao;
