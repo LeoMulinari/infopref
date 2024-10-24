@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.infopref.models.User;
+import com.example.infopref.models.DTO.PasswordChangeDTO;
 import com.example.infopref.models.Enums.TipoUser;
+import com.example.infopref.security.UserSpringSecurity;
 import com.example.infopref.services.UserService;
 
 import jakarta.validation.Valid;
@@ -64,6 +67,18 @@ public class UserController {
     public ResponseEntity<Void> putUser(@PathVariable("id") Long id, @Valid @RequestBody User newObj) {
         newObj.setId(id);
         this.userService.update(newObj);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<Void> changePassword(@RequestBody PasswordChangeDTO passwordChangeDTO) {
+        UserSpringSecurity authenticatedUser = userService.authenticated();
+        if (authenticatedUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        userService.changePassword(authenticatedUser.getId(), passwordChangeDTO.getCurrentPassword(),
+                passwordChangeDTO.getNewPassword());
         return ResponseEntity.noContent().build();
     }
 

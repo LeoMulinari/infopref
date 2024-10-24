@@ -81,6 +81,19 @@ public class UserService {
         return this.userRepository.save(obj);
     }
 
+    public void changePassword(Long userId, String currentPassword, String newPassword) {
+        User user = this.findById(userId);
+
+        // Verificar se a senha atual está correta
+        if (!bCryptPasswordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new AuthorizationException("Senha atual incorreta.");
+        }
+
+        // Atualizar a senha
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
     public void deleteById(Long id) {
         findById(id);
         try {
