@@ -4,6 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -83,7 +86,7 @@ public class RelatorioService {
             table.setSpacingBefore(10f);
 
             // Formatter para a data no formato dd-MM-yyyy
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+            DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
             // Ajuste na criação do card no método `gerarRelatorio`
             for (OrdemServico os : ordens) {
@@ -111,7 +114,7 @@ public class RelatorioService {
                 PdfPCell leftCell = new PdfPCell();
                 leftCell.setBorder(PdfPCell.NO_BORDER);
 
-                String dataAberturaFormatada = dateFormatter.format(os.getData_abertura());
+                String dataAberturaFormatada = os.getData_abertura().format(localDateFormatter);
                 leftCell.addElement(new Paragraph("Data Abertura: " + dataAberturaFormatada));
 
                 if (os.getEquipamentos() != null && !os.getEquipamentos().isEmpty()) {
@@ -229,12 +232,12 @@ public class RelatorioService {
     }
 
     private List<OrdemServico> filtrarOrdens(String dataInicio, String dataFim, String tipo, String filtro) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date inicio, fim;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate inicio, fim;
         try {
-            inicio = formatter.parse(dataInicio);
-            fim = formatter.parse(dataFim);
-        } catch (ParseException e) {
+            inicio = LocalDate.parse(dataInicio, formatter);
+            fim = LocalDate.parse(dataFim, formatter);
+        } catch (DateTimeParseException e) {
             throw new RuntimeException("Erro ao converter datas para geração de relatório.");
         }
 
@@ -255,32 +258,16 @@ public class RelatorioService {
                 }
                 break;
             case "solicitante":
-                try {
-                    solicitanteId = Long.parseLong(filtro);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("ID do solicitante inválido: " + filtro);
-                }
+                solicitanteId = Long.parseLong(filtro);
                 break;
             case "departamento":
-                try {
-                    departamentoId = Long.parseLong(filtro);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("ID do departamento inválido: " + filtro);
-                }
+                departamentoId = Long.parseLong(filtro);
                 break;
             case "secretaria":
-                try {
-                    secretariaId = Long.parseLong(filtro);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("ID da secretaria inválido: " + filtro);
-                }
+                secretariaId = Long.parseLong(filtro);
                 break;
             case "tecnico":
-                try {
-                    tecnicoId = Long.parseLong(filtro);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("ID do técnico inválido: " + filtro);
-                }
+                tecnicoId = Long.parseLong(filtro);
                 break;
             default:
                 throw new IllegalArgumentException("Tipo de filtro inválido: " + tipo);

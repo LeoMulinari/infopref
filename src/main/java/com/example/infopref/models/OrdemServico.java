@@ -1,6 +1,6 @@
 package com.example.infopref.models;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,10 +70,10 @@ public class OrdemServico {
 
     @Column(name = "data_abertura", unique = false, nullable = false, updatable = true)
     @NotNull
-    private Date data_abertura;
+    private LocalDate data_abertura;
 
     @Column(name = "data_finalizacao", unique = false, nullable = true, updatable = true)
-    private Date data_finalizacao;
+    private LocalDate data_finalizacao;
 
     @ManyToOne
     @JoinColumn(name = "cod_sol", nullable = false)

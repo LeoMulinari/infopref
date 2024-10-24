@@ -1,6 +1,6 @@
 package com.example.infopref.services;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,7 +49,7 @@ public class EquipamentoService {
         throw new RuntimeException("Equipamento não encontrado {id:" + id + "}");
     }
 
-    public Equipamento create(Equipamento obj, Long departamentoId, Date dataAquisicao) {
+    public Equipamento create(Equipamento obj, Long departamentoId, LocalDate dataAquisicao) {
         userService.VerificaADMeTec();
         obj.setId(null);
         System.out.println(

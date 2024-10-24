@@ -1,6 +1,6 @@
 package com.example.infopref.repositories;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,8 +29,8 @@ public interface OrdemServicoRepository extends JpaRepository<OrdemServico, Long
                         "(:secretariaId IS NULL OR sec.id = :secretariaId) AND " +
                         "(:tecnicoId IS NULL OR t.id = :tecnicoId)")
         List<OrdemServico> findByDateRangeAndFilters(
-                        @Param("dataInicio") Date dataInicio,
-                        @Param("dataFim") Date dataFim,
+                        @Param("dataInicio") LocalDate dataInicio,
+                        @Param("dataFim") LocalDate dataFim,
                         @Param("tipoChamado") TipoChamado tipoChamado,
                         @Param("solicitanteId") Long solicitanteId,
                         @Param("departamentoId") Long departamentoId,

@@ -1,6 +1,6 @@
 package com.example.infopref.services;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,7 +77,7 @@ public class Equip_depService {
         return this.equip_depRepository.save(obj);
     }
 
-    public void alterarDepartamento(Long equipamentoId, Long novoDepartamentoId, Date novaDataAquisicao) {
+    public void alterarDepartamento(Long equipamentoId, Long novoDepartamentoId, LocalDate novaDataAquisicao) {
         List<Equip_dep> equipDepList = equip_depRepository.findByEquipamentoId(equipamentoId);
 
         if (equipDepList.isEmpty()) {

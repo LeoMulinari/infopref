@@ -1,6 +1,6 @@
 package com.example.infopref.models.DTO;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import lombok.Data;
 
@@ -11,5 +11,5 @@ public class EquipamentoDTO {
     private String modelo;
     private String marca;
     private String descr_tec;
-    private Date data_aquisicao;
+    private LocalDate data_aquisicao;
 }

@@ -1,6 +1,6 @@
 package com.example.infopref.models;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +28,7 @@ public class Equip_dep {
     private Long id;
 
     @Column(name = "data_aquisicao", unique = false, nullable = true, updatable = true)
-    private Date data_aquisicao;
+    private LocalDate data_aquisicao;
 
     @ManyToOne
     @JoinColumn(name = "cod_equip", nullable = false)
