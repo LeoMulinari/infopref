@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.example.infopref.models.Solicitante;
 import com.example.infopref.models.Tecnico;
 import com.example.infopref.services.TecnicoService;
 
@@ -37,6 +38,12 @@ public class TecnicoController {
     public ResponseEntity<Tecnico> getTecnicoById(@PathVariable("id") Long id) {
         Tecnico obj = this.tecnicoService.findById(id);
 
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping("/usuario/{userId}")
+    public ResponseEntity<Tecnico> getTecnicoByUserId(@PathVariable("userId") Long userId) {
+        Tecnico obj = this.tecnicoService.findByUserId(userId);
         return ResponseEntity.ok().body(obj);
     }
 

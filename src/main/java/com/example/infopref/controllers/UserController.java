@@ -45,6 +45,12 @@ public class UserController {
         return ResponseEntity.ok().body(obj);
     }
 
+    @GetMapping("/{id}/profile")
+    public ResponseEntity<TipoUser> getUserProfile(@PathVariable("id") Long id) {
+        TipoUser profile = userService.getUserProfileById(id);
+        return ResponseEntity.ok().body(profile);
+    }
+
     @PostMapping
     public ResponseEntity<User> postUser(@RequestBody @Valid User obj) {
         obj.setProfile(TipoUser.TECNICO);

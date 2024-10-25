@@ -21,8 +21,13 @@ public class TecnicoService {
         return tecnicoRepository.findAll();
     }
 
+    public Tecnico findByUserId(Long userId) {
+        return tecnicoRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Tecnico não encontrado para o User ID: " + userId));
+    }
+
     public Tecnico findById(Long id) {
-        userService.VerificaADM();
+        // userService.VerificaADM();
         Optional<Tecnico> obj = this.tecnicoRepository.findById(id);
 
         if (obj.isPresent()) {

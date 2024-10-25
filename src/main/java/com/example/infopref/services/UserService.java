@@ -94,6 +94,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public TipoUser getUserProfileById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return user.get().getProfile();
+        }
+        throw new ObjectNotFoundException("Usuário não encontrado {id: " + id + "}");
+    }
+
     public void deleteById(Long id) {
         findById(id);
         try {
