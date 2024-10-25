@@ -76,6 +76,12 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/reset-password")
+    public ResponseEntity<Void> resetPassword(@PathVariable("id") Long id, @RequestBody String newPassword) {
+        userService.resetPassword(id, newPassword);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/change-password")
     public ResponseEntity<Void> changePassword(@RequestBody PasswordChangeDTO passwordChangeDTO) {
         UserSpringSecurity authenticatedUser = userService.authenticated();

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.infopref.models.Solicitante;
 import com.example.infopref.models.Tecnico;
 import com.example.infopref.services.TecnicoService;
 

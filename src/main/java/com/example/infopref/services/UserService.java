@@ -81,6 +81,16 @@ public class UserService {
         return this.userRepository.save(obj);
     }
 
+    public void resetPassword(Long userId, String newPassword) {
+        // Verificar se quem está fazendo a requisição é um administrador
+        // VerificaADM();
+
+        User user = this.findById(userId);
+        user.setPassword(bCryptPasswordEncoder.encode(newPassword));
+
+        userRepository.save(user);
+    }
+
     public void changePassword(Long userId, String currentPassword, String newPassword) {
         User user = this.findById(userId);
 
