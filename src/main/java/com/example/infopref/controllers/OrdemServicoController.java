@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.infopref.models.OrdemServico;
 import com.example.infopref.models.DTO.OrdemServicoDTO;
+import com.example.infopref.models.Enums.Prioridade;
+import com.example.infopref.models.Enums.StatusOS;
 import com.example.infopref.services.OrdemServicoService;
 
 import jakarta.validation.Valid;
@@ -52,6 +54,30 @@ public class OrdemServicoController {
         List<OrdemServico> obj = this.ordemServicoService.findAllByCod_sol(cod_sol);
 
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping("/count/status/{status}")
+    public ResponseEntity<Long> countByStatus(@PathVariable("status") StatusOS status) {
+        Long count = ordemServicoService.countByStatus(status);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/count/urgent-priority")
+    public ResponseEntity<Long> countByUrgentPriority() {
+        Long count = ordemServicoService.countByPriority(Prioridade.Urgente);
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/count/finalized-this-month")
+    public ResponseEntity<Long> countFinalizedThisMonth() {
+        Long count = ordemServicoService.countFinalizedThisMonth();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/count/urgent-not-finalized")
+    public ResponseEntity<Long> countUrgentNotFinalized() {
+        Long count = ordemServicoService.countUrgentPriorityNotFinalized();
+        return ResponseEntity.ok(count);
     }
 
     @PostMapping

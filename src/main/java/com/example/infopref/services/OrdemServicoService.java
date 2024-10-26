@@ -1,5 +1,6 @@
 package com.example.infopref.services;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import com.example.infopref.models.Equipamento;
 import com.example.infopref.models.OrdemServico;
 import com.example.infopref.models.DTO.OrdemServicoDTO;
+import com.example.infopref.models.Enums.Prioridade;
+import com.example.infopref.models.Enums.StatusOS;
 import com.example.infopref.models.Enums.TipoUser;
 import com.example.infopref.repositories.EquipamentoRepository;
 import com.example.infopref.repositories.OrdemServicoRepository;
@@ -69,6 +72,24 @@ public class OrdemServicoService {
         List<OrdemServico> listSol = this.ordemServicoRepository.findAllBySolicitante_Id(cod_sol);
 
         return listSol;
+    }
+
+    public Long countByStatus(StatusOS status) {
+        return ordemServicoRepository.countByStatus(status);
+    }
+
+    public Long countByPriority(Prioridade prioridade) {
+        return ordemServicoRepository.countByPrioridade(prioridade);
+    }
+
+    public Long countFinalizedThisMonth() {
+        YearMonth currentMonth = YearMonth.now();
+        return ordemServicoRepository.countByStatusAndMonth(StatusOS.FINALIZADO, currentMonth.getYear(),
+                currentMonth.getMonthValue());
+    }
+
+    public Long countUrgentPriorityNotFinalized() {
+        return ordemServicoRepository.countUrgentNotFinalized(Prioridade.Urgente, StatusOS.FINALIZADO);
     }
 
     @Transactional
