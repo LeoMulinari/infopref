@@ -2,6 +2,7 @@ package com.example.infopref.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ import com.example.infopref.repositories.TecnicoRepository;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -55,6 +57,16 @@ public class RelatorioService {
         try {
             PdfWriter.getInstance(document, out);
             document.open();
+
+            // Carregar a logo da empresa
+            try {
+                Image logo = Image.getInstance("infopref-back\\src\\main\\resources\\logo.png"); // Caminho para a logo
+                logo.scaleToFit(50, 50); // Ajuste de tamanho
+                logo.setAlignment(Image.ALIGN_LEFT); // Alinhamento para o canto superior esquerdo
+                document.add(logo);
+            } catch (IOException e) {
+                e.printStackTrace(); // Lida com exceções relacionadas ao carregamento da imagem
+            }
 
             Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
             Font subTitleFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
