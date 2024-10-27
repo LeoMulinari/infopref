@@ -1,7 +1,5 @@
 package com.example.infopref.models;
 
-import java.sql.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,9 +24,6 @@ public class Equip_os {
     @Column(name = "cod_equip_os")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "data_entrega", unique = false, nullable = true, updatable = true)
-    private Date data_entrega;
 
     @ManyToOne
     @JoinColumn(name = "cod_equip", nullable = false)

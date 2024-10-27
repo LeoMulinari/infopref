@@ -58,8 +58,6 @@ public class Equip_osService {
 
         Equip_os obj = this.findByEquipamento_IdAndOrdemServico_Id(equipamento.getId(), ordemServico.getId());
 
-        obj.setData_entrega(newObj.getData_entrega());
-
         return this.equip_osRepository.save(obj);
     }
 
