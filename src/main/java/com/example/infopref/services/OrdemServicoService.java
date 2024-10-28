@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.infopref.models.Equipamento;
 import com.example.infopref.models.OrdemServico;
 import com.example.infopref.models.DTO.OrdemServicoDTO;
 import com.example.infopref.models.Enums.Prioridade;
@@ -94,7 +93,7 @@ public class OrdemServicoService {
 
     @Transactional
     public OrdemServico create(OrdemServicoDTO dto) {
-        System.out.println("Equipamentos IDs recebidos: " + dto.getEquipamentosIds());
+        System.out.println("Equipamentos Patrimônio recebidos: " + dto.getEquipamentoPatrimonio());
         UserSpringSecurity userSpringSecurity = userService.authenticated();
         if (!Objects.nonNull(userSpringSecurity))
             throw new AuthorizationException("Acesso negado!");
@@ -113,31 +112,18 @@ public class OrdemServicoService {
         if (dto.getResolucao() != null) {
             ordemServico.setResolucao(dto.getResolucao());
         }
-        /*
-         * if (dto.getData_abertura().after(dto.getData_finalizacao())) {
-         * throw new
-         * RuntimeException("A data de abertura não pode ser posterior à data de finalização."
-         * );
-         * }
-         */
 
-        // Setando as entidades relacionadas
         ordemServico.setSolicitante(solicitanteRepository.findById(dto.getCod_sol()).orElseThrow());
-
-        // Apenas seta o técnico se o dto contiver o cod_tec
         if (dto.getCod_tec() != null) {
             ordemServico.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
         }
-        // Buscando e associando os equipamentos
-        if (dto.getEquipamentosIds() == null || dto.getEquipamentosIds().isEmpty()) {
-            throw new RuntimeException("IDs de equipamentos são obrigatórios");
+
+        // Usar apenas o campo de patrimônio fornecido
+        if (dto.getEquipamentoPatrimonio() != null && !dto.getEquipamentoPatrimonio().isEmpty()) {
+            ordemServico.setEquipamentoPatrimonio(String.join(", ", dto.getEquipamentoPatrimonio()));
         }
 
-        List<Equipamento> equipamentos = equipamentoRepository.findAllById(dto.getEquipamentosIds());
-        ordemServico.setEquipamentos(equipamentos);
-
         return ordemServicoRepository.save(ordemServico);
-
     }
 
     @Transactional
@@ -161,46 +147,17 @@ public class OrdemServicoService {
             obj.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
         }
 
-        // Atualiza os equipamentos associados
-        // List<Equipamento> equipamentos =
-        // equipamentoRepository.findAllById(dto.getEquipamentosIds());
-        // obj.setEquipamentos(equipamentos);
+        // Atualizar o campo de patrimônio do equipamento
+        if (dto.getEquipamentoPatrimonio() != null && !dto.getEquipamentoPatrimonio().isEmpty()) {
+            obj.setEquipamentoPatrimonio(String.join(", ", dto.getEquipamentoPatrimonio()));
+        }
 
-        // Atualiza os equipamentos e suas datas de entrega
-        // Primeiramente, salvamos a ordem de serviço
         obj = ordemServicoRepository.save(obj);
 
-        // Atualiza ou cria os registros equip_os com as datas de entrega
-        /*
-         * for (Map.Entry<Long, Date> entry : dto.getDataEntregaMap().entrySet()) {
-         * Long equipamentoId = entry.getKey();
-         * Date dataEntrega = entry.getValue();
-         * 
-         * // Encontra o Equipamento
-         * Equipamento equipamento = equipamentoRepository.findById(equipamentoId)
-         * .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
-         * 
-         * // Encontra ou cria o Equip_os correspondente
-         * Equip_os equipOs = equipOsRepository.findByOrdemServicoAndEquipamento(obj,
-         * equipamento)
-         * .orElse(new Equip_os());
-         * 
-         * // Atualiza a data de entrega
-         * equipOs.setData_entrega(dataEntrega);
-         * equipOs.setEquipamento(equipamento);
-         * equipOs.setOrdemServico(obj);
-         * 
-         * // Salva a instância de Equip_os
-         * equipOsRepository.save(equipOs);
-         * }
-         */
-
         return obj;
-
     }
 
     public void deleteById(Long id) {
-        // userService.VerificaADMeTec();
         findById(id);
         try {
             this.ordemServicoRepository.deleteById(id);

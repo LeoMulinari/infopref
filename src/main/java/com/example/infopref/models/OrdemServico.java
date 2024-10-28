@@ -87,4 +87,7 @@ public class OrdemServico {
     @JoinTable(name = "equip_os", joinColumns = @JoinColumn(name = "cod_os"), inverseJoinColumns = @JoinColumn(name = "cod_equip"))
     private List<Equipamento> equipamentos = new ArrayList<>();
 
+    @Column(name = "equipamento_patrimonio", nullable = true) // Novo campo para o patrimônio não registrado
+    private String equipamentoPatrimonio;
+
 }

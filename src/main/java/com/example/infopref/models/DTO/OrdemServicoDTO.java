@@ -22,5 +22,5 @@ public class OrdemServicoDTO {
     private Long cod_sol;
     private Long cod_tec;
     private List<Long> equipamentosIds;
-    // private Map<Long, Date> dataEntregaMap;
+    private String equipamentoPatrimonio;
 }
