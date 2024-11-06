@@ -29,7 +29,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfWriter;;
 
 @Service
 public class RelatorioService {
@@ -50,41 +50,50 @@ public class RelatorioService {
 
     public ByteArrayInputStream gerarRelatorio(String dataInicio, String dataFim, String tipo, String filtro) {
         List<OrdemServico> ordens = filtrarOrdens(dataInicio, dataFim, tipo, filtro);
-
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
-            PdfWriter.getInstance(document, out);
+            PdfWriter writer = PdfWriter.getInstance(document, out);
+
+            writer.setPageEvent(new PageNumberEvent());
+
             document.open();
 
             // Carregar a logo da empresa
             try {
-                Image logo = Image.getInstance("infopref-back\\src\\main\\resources\\logo.png"); // Caminho para a logo
-                logo.scaleToFit(50, 50); // Ajuste de tamanho
-                logo.setAlignment(Image.ALIGN_LEFT); // Alinhamento para o canto superior esquerdo
+                Image logo = Image.getInstance("infopref-back\\src\\main\\resources\\logo.png");
+                logo.scaleToFit(60, 60);
+                logo.setAlignment(Image.ALIGN_LEFT);
                 document.add(logo);
             } catch (IOException e) {
-                e.printStackTrace(); // Lida com exceções relacionadas ao carregamento da imagem
+                e.printStackTrace();
             }
 
             Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
             Font subTitleFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
 
-            // Título do relatório
-            Paragraph title = new Paragraph("Relatório de Ordens de Serviço", titleFont);
+            // Gerar título dinâmico para o relatório com o tipo de filtro
+            String tituloRelatorio = "Relatório de Ordens de Serviço por " + getFiltroTitulo(tipo);
+            Paragraph title = new Paragraph(tituloRelatorio, titleFont);
             title.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(title);
             document.add(new Paragraph(" "));
 
-            // Subtítulo com período e tipo de filtro
-            String periodo = "Período:  " + formatDate(dataInicio) + "   a   " + formatDate(dataFim);
-            String filtroTexto = getFiltroDescricao(tipo, filtro);
+            // Adicionar a data de geração do relatório
+            String dataGeracao = "Data de Geração: "
+                    + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            Paragraph dataParagraph = new Paragraph(dataGeracao, subTitleFont);
+            dataParagraph.setAlignment(Paragraph.ALIGN_CENTER);
+            document.add(dataParagraph);
 
-            // Adicionando período e filtro em linhas separadas
+            // Adicionar o período do relatório
+            String periodo = "Período: " + formatDate(dataInicio) + " a " + formatDate(dataFim);
             Paragraph periodoParagraph = new Paragraph(periodo, subTitleFont);
             periodoParagraph.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(periodoParagraph);
+
+            String filtroTexto = getFiltroDescricao(tipo, filtro);
 
             Paragraph filtroParagraph = new Paragraph(filtroTexto, subTitleFont);
             filtroParagraph.setAlignment(Paragraph.ALIGN_CENTER);
@@ -97,44 +106,40 @@ public class RelatorioService {
             table.setWidthPercentage(100);
             table.setSpacingBefore(10f);
 
-            // Formatter para a data no formato dd-MM-yyyy
-            DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-            // Ajuste na criação do card no método `gerarRelatorio`
+            // Loop para cada ordem de serviço, com paginação a cada 5 registros
             for (OrdemServico os : ordens) {
-                // Criando uma tabela principal de 1 coluna para representar o card completo
+
+                // Criando o card de informação para cada ordem de serviço
                 PdfPTable cardTable = new PdfPTable(1);
                 cardTable.setWidthPercentage(100);
                 cardTable.setSpacingBefore(10f);
-
-                // Criação de um "card" para cada ordem de serviço
                 PdfPCell cardCell = new PdfPCell();
                 cardCell.setPadding(10);
 
-                // Número de Protocolo (Centralizado e com linha separadora abaixo)
+                // Número de Protocolo
                 Paragraph protocolo = new Paragraph("Número de Protocolo: " + os.getId(),
-                        new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD));
-                protocolo.setAlignment(Paragraph.ALIGN_CENTER);
+                        new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD));
+                protocolo.setAlignment(Paragraph.ALIGN_LEFT);
                 cardCell.addElement(protocolo);
 
-                // Criando uma tabela interna de 2 colunas para os detalhes
+                // Tabela interna para detalhes
                 PdfPTable infoTable = new PdfPTable(2);
                 infoTable.setWidthPercentage(100);
                 infoTable.setSpacingBefore(2f);
 
-                // Primeira coluna de informações
+                // Primeira coluna
                 PdfPCell leftCell = new PdfPCell();
                 leftCell.setBorder(PdfPCell.NO_BORDER);
-
-                String dataAberturaFormatada = os.getData_abertura().format(localDateFormatter);
-                leftCell.addElement(new Paragraph("Data Abertura: " + dataAberturaFormatada));
+                DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                leftCell.addElement(
+                        new Paragraph("Data Abertura: " + os.getData_abertura().format(localDateFormatter)));
 
                 if (os.getEquipamentos() != null && !os.getEquipamentos().isEmpty()) {
                     StringBuilder equipamentosStr = new StringBuilder("Nº de Patrimônio: ");
                     for (Equipamento equipamento : os.getEquipamentos()) {
                         equipamentosStr.append(equipamento.getNum_patrimonio()).append(", ");
                     }
-                    equipamentosStr.setLength(equipamentosStr.length() - 2); // Remove a última vírgula e espaço
+                    equipamentosStr.setLength(equipamentosStr.length() - 2);
                     leftCell.addElement(new Paragraph(equipamentosStr.toString()));
                 } else {
                     leftCell.addElement(new Paragraph("Equipamentos: Nenhum"));
@@ -143,10 +148,9 @@ public class RelatorioService {
                 leftCell.addElement(new Paragraph("Tipo Chamado: " + os.getTipo_chamado().getDescricao()));
                 leftCell.addElement(new Paragraph("Status: " + os.getStatus().getDisplayName()));
 
-                // Segunda coluna de informações
+                // Segunda coluna
                 PdfPCell rightCell = new PdfPCell();
                 rightCell.setBorder(PdfPCell.NO_BORDER);
-
                 rightCell.addElement(new Paragraph("Solicitante: " + os.getSolicitante().getNome()));
                 rightCell.addElement(new Paragraph(
                         "Secretaria: " + os.getSolicitante().getDepartamento().getSecretaria().getNome()));
@@ -158,19 +162,13 @@ public class RelatorioService {
                     rightCell.addElement(new Paragraph("Técnico: Não atribuído"));
                 }
 
-                // Adiciona as duas células de informações à tabela interna
                 infoTable.addCell(leftCell);
                 infoTable.addCell(rightCell);
-
-                // Adiciona a tabela de informações ao card principal
                 cardCell.addElement(infoTable);
                 cardTable.addCell(cardCell);
-
-                // Adiciona o card completo ao documento
                 document.add(cardTable);
             }
 
-            document.add(table);
             document.close();
 
         } catch (DocumentException e) {
@@ -193,6 +191,24 @@ public class RelatorioService {
         }
     }
 
+    // Método para obter o título do filtro
+    private String getFiltroTitulo(String tipo) {
+        switch (tipo.toLowerCase()) {
+            case "tipo_chamado":
+                return "Tipo de Chamado";
+            case "solicitante":
+                return "Solicitante";
+            case "departamento":
+                return "Departamento";
+            case "secretaria":
+                return "Secretaria";
+            case "tecnico":
+                return "Técnico";
+            default:
+                return "";
+        }
+    }
+
     // Método para descrever o filtro utilizado no relatório
     private String getFiltroDescricao(String tipo, String filtro) {
         switch (tipo.toLowerCase()) {
@@ -204,16 +220,16 @@ public class RelatorioService {
                 } catch (IllegalArgumentException e) {
                     return "Tipo de Chamado: Desconhecido";
                 }
-                return "Relatório por Tipo de Chamado           Tipo: " + tipoChamado.getDescricao();
+                return "Tipo: " + tipoChamado.getDescricao();
             case "solicitante":
-                return "Relatório por Solicitante               Solicitante: "
+                return "Solicitante: "
                         + getSolicitanteNome(Long.parseLong(filtro));
             case "departamento":
-                return "Relatório por Departamento              " + getDepartamentoNome(Long.parseLong(filtro));
+                return getDepartamentoNome(Long.parseLong(filtro));
             case "secretaria":
-                return "Relatório por Secretaria                " + getSecretariaNome(Long.parseLong(filtro));
+                return getSecretariaNome(Long.parseLong(filtro));
             case "tecnico":
-                return "Relatório por Técnico                   Técnico: " + getTecnicoNome(Long.parseLong(filtro));
+                return "Técnico: " + getTecnicoNome(Long.parseLong(filtro));
             default:
                 return "";
         }
