@@ -1,9 +1,7 @@
 package com.example.infopref.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
-
 import java.util.Arrays;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import com.example.infopref.security.JWTAuthenticationFilter;
 import com.example.infopref.security.JWTAuthorizationFilter;
 import com.example.infopref.security.JWTUtil;

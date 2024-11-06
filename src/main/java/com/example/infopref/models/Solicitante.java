@@ -27,7 +27,7 @@ public class Solicitante {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", unique = false, nullable = false, updatable = true, length = 100) // rever update
+    @Column(name = "nome", unique = false, nullable = false, updatable = true, length = 100)
     @NotBlank
     private String nome;
 
@@ -35,7 +35,7 @@ public class Solicitante {
     @Size(min = 14, max = 15)
     private String fone;
 
-    @Column(name = "id_acesso_remoto", unique = true, nullable = true, updatable = true) // rever update
+    @Column(name = "id_acesso_remoto", unique = true, nullable = true, updatable = true)
     private String id_acesso_remoto;
 
     @ManyToOne

@@ -26,7 +26,7 @@ import com.example.infopref.services.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/user") // http://localhost:8080/user
+@RequestMapping("/user")
 @Validated
 public class UserController {
 
@@ -38,7 +38,7 @@ public class UserController {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
-    @GetMapping("/{id}") // http://localhost:8080/user/2
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUserAndProfile(@PathVariable("id") Long id) {
         User obj = this.userService.findById(id);
 

@@ -40,19 +40,17 @@ public class Equipamento {
     private String marca;
 
     @Column(name = "descr_tec", unique = false, nullable = true, updatable = true, length = 255)
-    private String descr_tec = "Não especificada"; // Valor padrão
+    private String descr_tec = "Não especificada";
 
     public void setDescr_tec(String descr_tec) {
         this.descr_tec = (descr_tec == null || descr_tec.isEmpty()) ? "Não especificada" : descr_tec;
     }
 
     @ManyToMany(mappedBy = "equipamentos")
-    @JsonIgnore // Ignora a serialização dos equipamentos dentro de OrdemServico para evitar a
-                // recursão
+    @JsonIgnore
     private List<OrdemServico> ordemServicos;
 
     @ManyToMany(mappedBy = "equipamentos")
-    @JsonIgnore // Ignora a serialização dos equipamentos dentro de OrdemServico para evitar a
-                // recursão
+    @JsonIgnore
     private List<Departamento> departamentos;
 }

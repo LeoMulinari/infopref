@@ -24,7 +24,7 @@ import com.example.infopref.services.OrdemServicoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/osmenu") // http://localhost:8080/ordemServico
+@RequestMapping("/osmenu")
 @Validated
 public class OrdemServicoController {
     @Autowired
@@ -35,7 +35,7 @@ public class OrdemServicoController {
         return ResponseEntity.ok().body(ordemServicoService.findAll());
     }
 
-    @GetMapping("/{id}") // http://localhost:8080/ordemServico/2
+    @GetMapping("/{id}")
     public ResponseEntity<OrdemServico> getOrdemServicoById(@PathVariable("id") Long id) {
         OrdemServico obj = this.ordemServicoService.findById(id);
 

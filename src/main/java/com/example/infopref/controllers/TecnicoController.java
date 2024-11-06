@@ -22,7 +22,7 @@ import com.example.infopref.services.TecnicoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/tecnicos") // http://localhost:8080/tecnico
+@RequestMapping("/tecnicos")
 @Validated
 public class TecnicoController {
     @Autowired
@@ -33,7 +33,7 @@ public class TecnicoController {
         return ResponseEntity.ok().body(tecnicoService.findAll());
     }
 
-    @GetMapping("/{id}") // http://localhost:8080/tecnico/2
+    @GetMapping("/{id}")
     public ResponseEntity<Tecnico> getTecnicoById(@PathVariable("id") Long id) {
         Tecnico obj = this.tecnicoService.findById(id);
 
@@ -48,8 +48,6 @@ public class TecnicoController {
 
     @PostMapping
     public ResponseEntity<Tecnico> postTecnico(@RequestBody @Valid Tecnico obj) {
-        System.out.println("Recebendo o técnico: " + obj);
-        // Verificar se o cod_usuario é válido
         if (obj.getUser().getId() == null) {
             return ResponseEntity.badRequest().body(null);
         }

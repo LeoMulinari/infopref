@@ -27,9 +27,6 @@ public class RelatorioController {
             @RequestParam("dataFim") String dataFim,
             @RequestParam("tipo") String tipo,
             @RequestParam(value = "filtro", required = false) String filtro) {
-        System.out.println("Requisição recebida para gerar relatório");
-        System.out.println("Parâmetros - Data Início: " + dataInicio + ", Data Fim: " + dataFim + ", Tipo: " + tipo
-                + ", Filtro: " + filtro);
 
         ByteArrayInputStream bis = relatorioService.gerarRelatorio(dataInicio, dataFim, tipo, filtro);
 

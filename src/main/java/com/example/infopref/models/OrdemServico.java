@@ -49,8 +49,7 @@ public class OrdemServico {
     private TipoChamado tipo_chamado;
 
     @Column(name = "descricao", unique = false, nullable = false, updatable = true, length = 255)
-    private String descricao = "Nenhuma descrição fornecida"; // Valor padrão
-
+    private String descricao = "Nenhuma descrição fornecida"; 
     public void setDescricao(String descricao) {
         this.descricao = (descricao == null || descricao.isEmpty()) ? "Nenhuma descrição fornecida" : descricao;
     }
@@ -61,10 +60,9 @@ public class OrdemServico {
     private Prioridade prioridade;
 
     @Column(name = "resolucao", unique = false, nullable = true, updatable = true, length = 255)
-    private String resolucao = "Não definida"; // Valor padrão
+    private String resolucao = "Não definida"; 
 
     public void setResolucao(String resolucao) {
-        System.out.println("Valor recebido para resolucao: " + resolucao);
         this.resolucao = (resolucao == null || resolucao.isEmpty()) ? "Não definida" : resolucao;
     }
 
@@ -87,7 +85,7 @@ public class OrdemServico {
     @JoinTable(name = "equip_os", joinColumns = @JoinColumn(name = "cod_os"), inverseJoinColumns = @JoinColumn(name = "cod_equip"))
     private List<Equipamento> equipamentos = new ArrayList<>();
 
-    @Column(name = "equipamento_patrimonio", nullable = true) // Novo campo para o patrimônio não registrado
+    @Column(name = "equipamento_patrimonio", nullable = true) 
     private String equipamentoPatrimonio;
 
 }

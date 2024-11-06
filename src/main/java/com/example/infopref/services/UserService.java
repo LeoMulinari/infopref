@@ -31,7 +31,6 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        // VerificaADM(); arrumar pra adm buscar todos e usuario buscar só a si mesmo
 
         Optional<User> obj = this.userRepository.findById(id);
         if (obj.isPresent()) {
@@ -56,10 +55,8 @@ public class UserService {
     }
 
     public User create(User obj) {
-        // VerificaADM();
         obj.setId(null);
         obj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
-        // Verificação explícita para garantir que o TipoUser está correto
         if (obj.getProfile() == TipoUser.TECNICO) {
             obj.setProfile(TipoUser.TECNICO);
         } else if (obj.getProfile() == TipoUser.ADM) {
@@ -68,7 +65,6 @@ public class UserService {
             obj.setProfile(TipoUser.SOLICITANTE);
         }
 
-        System.out.println("Criando usuário com perfil: " + obj.getProfile());
         return this.userRepository.save(obj);
     }
 
@@ -82,9 +78,6 @@ public class UserService {
     }
 
     public void resetPassword(Long userId, String newPassword) {
-        // Verificar se quem está fazendo a requisição é um administrador
-        // VerificaADM();
-
         User user = this.findById(userId);
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
 
@@ -94,12 +87,10 @@ public class UserService {
     public void changePassword(Long userId, String currentPassword, String newPassword) {
         User user = this.findById(userId);
 
-        // Verificar se a senha atual está correta
         if (!bCryptPasswordEncoder.matches(currentPassword, user.getPassword())) {
             throw new AuthorizationException("Senha atual incorreta.");
         }
 
-        // Atualizar a senha
         user.setPassword(bCryptPasswordEncoder.encode(newPassword));
         userRepository.save(user);
     }

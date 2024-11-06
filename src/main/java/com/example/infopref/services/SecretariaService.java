@@ -22,7 +22,6 @@ public class SecretariaService {
     }
 
     public Secretaria findById(Long id) {
-        // userService.VerificaADMeTec();
         Optional<Secretaria> obj = this.secretariaRepository.findById(id);
 
         if (obj.isPresent()) {

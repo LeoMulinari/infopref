@@ -43,10 +43,8 @@ public class InfoInternetService {
     }
 
     public InfoInternet create(InfoInternet obj, Long cod_dep) {
-        // userService.VerificaADMeTec();
         obj.setId(null);
 
-        // Associar o departamento à InfoInternet
         Departamento departamento = this.departamentoService.findById(cod_dep);
         obj.setDepartamento(departamento);
 

@@ -66,7 +66,6 @@ public class OrdemServicoService {
     }
 
     public List<OrdemServico> findAllByCod_sol(Long cod_sol) {
-        // userService.VerificaADMeTec();
         this.solicitanteRepository.findById(cod_sol);
         List<OrdemServico> listSol = this.ordemServicoRepository.findAllBySolicitante_Id(cod_sol);
 
@@ -93,7 +92,6 @@ public class OrdemServicoService {
 
     @Transactional
     public OrdemServico create(OrdemServicoDTO dto) {
-        System.out.println("Equipamentos Patrimônio recebidos: " + dto.getEquipamentoPatrimonio());
         UserSpringSecurity userSpringSecurity = userService.authenticated();
         if (!Objects.nonNull(userSpringSecurity))
             throw new AuthorizationException("Acesso negado!");
@@ -118,7 +116,6 @@ public class OrdemServicoService {
             ordemServico.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
         }
 
-        // Usar apenas o campo de patrimônio fornecido
         if (dto.getEquipamentoPatrimonio() != null && !dto.getEquipamentoPatrimonio().isEmpty()) {
             ordemServico.setEquipamentoPatrimonio(String.join(", ", dto.getEquipamentoPatrimonio()));
         }
@@ -147,7 +144,6 @@ public class OrdemServicoService {
             obj.setTecnico(tecnicoRepository.findById(dto.getCod_tec()).orElseThrow());
         }
 
-        // Atualizar o campo de patrimônio do equipamento
         if (dto.getEquipamentoPatrimonio() != null && !dto.getEquipamentoPatrimonio().isEmpty()) {
             obj.setEquipamentoPatrimonio(String.join(", ", dto.getEquipamentoPatrimonio()));
         }

@@ -32,7 +32,7 @@ public class Departamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", unique = true, nullable = false, updatable = true, length = 50) // rever update
+    @Column(name = "nome", unique = true, nullable = false, updatable = true, length = 50)
     @NotBlank
     private String nome;
 

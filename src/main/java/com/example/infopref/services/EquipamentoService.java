@@ -31,7 +31,6 @@ public class EquipamentoService {
     UserService userService;
 
     public List<Equipamento> findAll() {
-        System.out.println(equipamentoRepository.findAllWithDepartamento());
         return equipamentoRepository.findAllWithDepartamento();
     }
 
@@ -52,11 +51,9 @@ public class EquipamentoService {
     public Equipamento create(Equipamento obj, Long departamentoId, LocalDate dataAquisicao) {
         userService.VerificaADMeTec();
         obj.setId(null);
-        System.out.println(
-                "Criando Equipamento: Departamento ID = " + departamentoId + ", Data Aquisicao = " + dataAquisicao);
+
         Equipamento savedEquipamento = this.equipamentoRepository.save(obj);
 
-        // Associar o equipamento ao departamento
         Departamento departamento = departamentoService.findById(departamentoId);
 
         Equip_dep equipDep = new Equip_dep();
@@ -72,7 +69,6 @@ public class EquipamentoService {
     public Equipamento update(Equipamento newObj) {
         Equipamento obj = this.findById(newObj.getId());
 
-        // obj.setNum_patrimonio(newObj.getNum_patrimonio());
         obj.setModelo(newObj.getModelo());
         obj.setMarca(newObj.getMarca());
         obj.setDescr_tec(newObj.getDescr_tec());
@@ -83,10 +79,8 @@ public class EquipamentoService {
     public void deleteById(Long id) {
         findById(id);
         try {
-            // Remover todas as associações antes de excluir o equipamento
             equip_depService.deleteAssociationsByEquipamentoId(id);
 
-            // Agora podemos excluir o equipamento
             equipamentoRepository.deleteById(id);
         } catch (Exception e) {
             throw new RuntimeException("Erro ao deletar equipamento {id:" + id + "}", e);
@@ -111,10 +105,9 @@ public class EquipamentoService {
         dto.setMarca(equipamento.getMarca());
         dto.setDescr_tec(equipamento.getDescr_tec());
 
-        // Obter a data de aquisição associada ao equipamento
         List<Equip_dep> equipDeps = equip_depService.findByEquipamentoId(equipamento.getId());
         if (!equipDeps.isEmpty()) {
-            dto.setData_aquisicao(equipDeps.get(0).getData_aquisicao()); // Pega a data do primeiro associado
+            dto.setData_aquisicao(equipDeps.get(0).getData_aquisicao());
         }
 
         return dto;
