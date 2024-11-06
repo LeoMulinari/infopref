@@ -9,7 +9,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,13 +31,11 @@ public class Solicitante {
     @NotBlank
     private String nome;
 
-    @Column(name = "fone", unique = false, nullable = false, updatable = true)
-    @NotBlank
+    @Column(name = "fone", unique = false, nullable = true, updatable = true)
     @Size(min = 14, max = 15)
     private String fone;
 
-    @Column(name = "id_acesso_remoto", unique = true, nullable = false, updatable = true) // rever update
-    @NotNull
+    @Column(name = "id_acesso_remoto", unique = true, nullable = true, updatable = true) // rever update
     private String id_acesso_remoto;
 
     @ManyToOne

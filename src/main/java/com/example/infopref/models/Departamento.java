@@ -36,8 +36,7 @@ public class Departamento {
     @NotBlank
     private String nome;
 
-    @Column(name = "fone", unique = false, nullable = false, updatable = true)
-    @NotBlank
+    @Column(name = "fone", unique = false, nullable = true, updatable = true)
     @Size(min = 14, max = 15)
     private String fone;
 

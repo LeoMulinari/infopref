@@ -33,15 +33,13 @@ public class Equipamento {
     @NotBlank
     private String num_patrimonio;
 
-    @Column(name = "modelo", unique = false, nullable = false, updatable = true, length = 30)
-    @NotBlank
+    @Column(name = "modelo", unique = false, nullable = true, updatable = true, length = 30)
     private String modelo;
 
-    @Column(name = "marca", unique = false, nullable = false, updatable = true, length = 30)
-    @NotBlank
+    @Column(name = "marca", unique = false, nullable = true, updatable = true, length = 30)
     private String marca;
 
-    @Column(name = "descr_tec", unique = false, nullable = false, updatable = true, length = 255)
+    @Column(name = "descr_tec", unique = false, nullable = true, updatable = true, length = 255)
     private String descr_tec = "Não especificada"; // Valor padrão
 
     public void setDescr_tec(String descr_tec) {

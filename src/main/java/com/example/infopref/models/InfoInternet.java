@@ -35,8 +35,7 @@ public class InfoInternet {
     // @JsonProperty(access = Access.WRITE_ONLY)
     private String senha;
 
-    @Column(name = "ip", nullable = false, updatable = true, length = 16)
-    @NotBlank
+    @Column(name = "ip", nullable = true, updatable = true, length = 16)
     private String ip;
 
     @ManyToOne
