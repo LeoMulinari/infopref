@@ -29,7 +29,7 @@ public class Tecnico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", unique = false, nullable = false, updatable = true, length = 100) // rever update
+    @Column(name = "nome", unique = false, nullable = false, updatable = true, length = 100)
     @NotBlank
     private String nome;
 

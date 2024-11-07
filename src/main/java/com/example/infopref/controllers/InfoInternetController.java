@@ -22,7 +22,7 @@ import com.example.infopref.services.InfoInternetService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/infoInternet") // http://localhost:8080/infoInternet
+@RequestMapping("/infoInternet")
 @Validated
 public class InfoInternetController {
     @Autowired
@@ -33,7 +33,7 @@ public class InfoInternetController {
         return ResponseEntity.ok().body(infoInternetService.findAll());
     }
 
-    @GetMapping("/{id}") // http://localhost:8080/infoInternet/2
+    @GetMapping("/{id}")
     public ResponseEntity<InfoInternet> getInfoInternetById(@PathVariable("id") Long id) {
         InfoInternet obj = this.infoInternetService.findById(id);
 

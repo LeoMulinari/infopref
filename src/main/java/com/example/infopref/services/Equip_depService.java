@@ -53,10 +53,6 @@ public class Equip_depService {
     public Equip_dep create(Equip_dep obj) {
         userService.VerificaADMeTec();
 
-        System.out.println("Associando Equipamento ID = " + obj.getEquipamento().getId() +
-                " com Departamento ID = " + obj.getDepartamento().getId() +
-                ", Data Aquisicao = " + obj.getData_aquisicao());
-
         Equipamento equipamento = equipamentoService.findById(obj.getEquipamento().getId());
         Departamento departamento = departamentoService.findById(obj.getDepartamento().getId());
         obj.setEquipamento(equipamento);
@@ -84,7 +80,6 @@ public class Equip_depService {
             throw new RuntimeException("Equipamento não encontrado");
         }
 
-        // Supondo que deseja modificar o primeiro item encontrado na lista
         Equip_dep equipDep = equipDepList.get(0);
 
         Departamento novoDepartamento = departamentoService.findById(novoDepartamentoId);

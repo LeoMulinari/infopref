@@ -31,7 +31,6 @@ public class SolicitanteService {
     }
 
     public Solicitante findById(Long id) {
-        // userService.VerificaADMeTec();
         Optional<Solicitante> obj = this.solicitanteRepository.findById(id);
 
         if (obj.isPresent()) {
@@ -43,11 +42,11 @@ public class SolicitanteService {
     public Departamento findDepartamentoBySolicitanteId(Long solicitanteId) {
         Solicitante solicitante = solicitanteRepository.findById(solicitanteId)
                 .orElseThrow(() -> new RuntimeException("Solicitante não encontrado"));
-        return solicitante.getDepartamento(); // Assumindo que Solicitante tem um relacionamento com Departamento
+        return solicitante.getDepartamento(); 
     }
 
     public List<Solicitante> findAllByCod_dep(Long cod_dep) {
-        departamentoService.findById(cod_dep); // Certifique-se que o departamento existe
+        departamentoService.findById(cod_dep); 
         return solicitanteRepository.findAllByDepartamento_Id(cod_dep);
     }
 
@@ -55,10 +54,8 @@ public class SolicitanteService {
         userService.VerificaADMeTec();
         obj.setId(null);
 
-        // Buscando o departamento pelo ID para garantir que a secretaria seja associada
-        // automaticamente
         Departamento departamento = departamentoService.findById(obj.getDepartamento().getId());
-        obj.setDepartamento(departamento); // Associa o departamento ao solicitante
+        obj.setDepartamento(departamento); 
 
         return solicitanteRepository.save(obj);
     }
@@ -70,9 +67,8 @@ public class SolicitanteService {
         obj.setFone(newObj.getFone());
         obj.setId_acesso_remoto(newObj.getId_acesso_remoto());
 
-        // Atualizando o departamento e a secretaria
         Departamento departamento = departamentoService.findById(newObj.getDepartamento().getId());
-        obj.setDepartamento(departamento); // Associando departamento atualizado
+        obj.setDepartamento(departamento); 
 
         return this.solicitanteRepository.save(obj);
     }

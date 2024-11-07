@@ -60,7 +60,6 @@ public class RelatorioService {
 
             document.open();
 
-            // Carregar a logo da empresa
             try {
                 Image logo = Image.getInstance("src\\main\\java\\com\\example\\infopref\\services\\logo.png");
                 logo.scaleToFit(60, 60);
@@ -73,21 +72,18 @@ public class RelatorioService {
             Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
             Font subTitleFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
 
-            // Gerar título dinâmico para o relatório com o tipo de filtro
             String tituloRelatorio = "Relatório de Ordens de Serviço por " + getFiltroTitulo(tipo);
             Paragraph title = new Paragraph(tituloRelatorio, titleFont);
             title.setAlignment(Paragraph.ALIGN_CENTER);
             document.add(title);
             document.add(new Paragraph(" "));
 
-            // Adicionar a data de geração do relatório
             String dataGeracao = "Data de Geração: "
                     + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             Paragraph dataParagraph = new Paragraph(dataGeracao, subTitleFont);
             dataParagraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(dataParagraph);
 
-            // Adicionar o período do relatório
             String periodo = "Período: " + formatDate(dataInicio) + " a " + formatDate(dataFim);
             Paragraph periodoParagraph = new Paragraph(periodo, subTitleFont);
             periodoParagraph.setAlignment(Paragraph.ALIGN_LEFT);
@@ -105,28 +101,23 @@ public class RelatorioService {
             table.setWidthPercentage(100);
             table.setSpacingBefore(10f);
 
-            // Loop para cada ordem de serviço, com paginação a cada 5 registros
             for (OrdemServico os : ordens) {
 
-                // Criando o card de informação para cada ordem de serviço
                 PdfPTable cardTable = new PdfPTable(1);
                 cardTable.setWidthPercentage(100);
                 cardTable.setSpacingBefore(10f);
                 PdfPCell cardCell = new PdfPCell();
                 cardCell.setPadding(10);
 
-                // Número de Protocolo
                 Paragraph protocolo = new Paragraph("Número de Protocolo: " + os.getId(),
                         new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD));
                 protocolo.setAlignment(Paragraph.ALIGN_LEFT);
                 cardCell.addElement(protocolo);
 
-                // Tabela interna para detalhes
                 PdfPTable infoTable = new PdfPTable(2);
                 infoTable.setWidthPercentage(100);
                 infoTable.setSpacingBefore(2f);
 
-                // Primeira coluna
                 PdfPCell leftCell = new PdfPCell();
                 leftCell.setBorder(PdfPCell.NO_BORDER);
                 DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -147,7 +138,6 @@ public class RelatorioService {
                 leftCell.addElement(new Paragraph("Tipo Chamado: " + os.getTipo_chamado().getDescricao()));
                 leftCell.addElement(new Paragraph("Status: " + os.getStatus().getDisplayName()));
 
-                // Segunda coluna
                 PdfPCell rightCell = new PdfPCell();
                 rightCell.setBorder(PdfPCell.NO_BORDER);
                 rightCell.addElement(new Paragraph("Solicitante: " + os.getSolicitante().getNome()));
@@ -177,7 +167,6 @@ public class RelatorioService {
         return new ByteArrayInputStream(out.toByteArray());
     }
 
-    // Método para formatar a data para exibição
     private String formatDate(String date) {
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -190,7 +179,6 @@ public class RelatorioService {
         }
     }
 
-    // Método para obter o título do filtro
     private String getFiltroTitulo(String tipo) {
         switch (tipo.toLowerCase()) {
             case "tipo_chamado":
@@ -208,11 +196,9 @@ public class RelatorioService {
         }
     }
 
-    // Método para descrever o filtro utilizado no relatório
     private String getFiltroDescricao(String tipo, String filtro) {
         switch (tipo.toLowerCase()) {
             case "tipo_chamado":
-                // Aqui, obter a descrição do enum com base no valor do filtro
                 TipoChamado tipoChamado;
                 try {
                     tipoChamado = TipoChamado.valueOf(filtro.toUpperCase());
@@ -268,18 +254,16 @@ public class RelatorioService {
             throw new RuntimeException("Erro ao converter datas para geração de relatório.");
         }
 
-        // Definir todos os filtros como `null` inicialmente
         TipoChamado tipoChamado = null;
         Long solicitanteId = null;
         Long departamentoId = null;
         Long secretariaId = null;
         Long tecnicoId = null;
 
-        // Configurar o filtro específico com base no tipo
         switch (tipo.toLowerCase()) {
             case "tipo_chamado":
                 try {
-                    tipoChamado = TipoChamado.valueOf(filtro.toUpperCase()); // Converte string para enum
+                    tipoChamado = TipoChamado.valueOf(filtro.toUpperCase());
                 } catch (IllegalArgumentException e) {
                     throw new IllegalArgumentException("Tipo de chamado inválido: " + filtro);
                 }
@@ -300,7 +284,6 @@ public class RelatorioService {
                 throw new IllegalArgumentException("Tipo de filtro inválido: " + tipo);
         }
 
-        // Chamar o método de filtro do repositório
         return ordemServicoRepository.findByDateRangeAndFilters(
                 inicio, fim, tipoChamado, solicitanteId, departamentoId, secretariaId, tecnicoId);
     }

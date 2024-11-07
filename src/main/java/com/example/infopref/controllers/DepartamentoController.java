@@ -22,7 +22,7 @@ import com.example.infopref.services.DepartamentoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/departamentos") // http://localhost:8080/departamento
+@RequestMapping("/departamentos")
 @Validated
 public class DepartamentoController {
     @Autowired
@@ -33,7 +33,7 @@ public class DepartamentoController {
         return ResponseEntity.ok().body(departamentoService.findAll());
     }
 
-    @GetMapping("/{id}") // http://localhost:8080/departamento/2
+    @GetMapping("/{id}")
     public ResponseEntity<Departamento> getDepartamentoById(@PathVariable("id") Long id) {
         Departamento obj = this.departamentoService.findById(id);
 

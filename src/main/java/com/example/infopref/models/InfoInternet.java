@@ -26,13 +26,12 @@ public class InfoInternet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", unique = false, nullable = false, updatable = true, length = 30) // rever update
+    @Column(name = "nome", unique = false, nullable = false, updatable = true, length = 30)
     @NotBlank
     private String nome;
 
     @Column(name = "senha", nullable = false, updatable = true, length = 30)
     @NotBlank
-    // @JsonProperty(access = Access.WRITE_ONLY)
     private String senha;
 
     @Column(name = "ip", nullable = true, updatable = true, length = 16)

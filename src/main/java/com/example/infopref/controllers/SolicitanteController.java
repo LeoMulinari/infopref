@@ -22,7 +22,7 @@ import com.example.infopref.services.SolicitanteService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/solicitantes") // http://localhost:8080/solicitante
+@RequestMapping("/solicitantes")
 @Validated
 public class SolicitanteController {
     @Autowired
@@ -39,7 +39,7 @@ public class SolicitanteController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @GetMapping("/{id}") // http://localhost:8080/solicitante/2
+    @GetMapping("/{id}")
     public ResponseEntity<Solicitante> getSolicitanteById(@PathVariable("id") Long id) {
         Solicitante obj = this.solicitanteService.findById(id);
 

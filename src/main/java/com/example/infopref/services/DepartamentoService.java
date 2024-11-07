@@ -54,24 +54,15 @@ public class DepartamentoService {
 
     @Transactional
     public Departamento create(DepartamentoDTO dto) {
-        // userService.VerificaADMeTec();
         Departamento departamento = new Departamento();
         departamento.setNome(dto.getNome());
         departamento.setFone(dto.getFone());
-        // departamento.setSecretaria(secretariaRepository.findById(dto.getSecretariaId()).orElseThrow());
-
-        // Buscar a secretaria existente com base no ID enviado
+    
         Secretaria secretaria = secretariaRepository.findById(dto.getSecretariaId())
                 .orElseThrow(() -> new RuntimeException("Secretaria não encontrada"));
         departamento.setSecretaria(secretaria);
 
-        /*
-         * List<Equipamento> equipamentos = (List<Equipamento>) equipamentoRepository
-         * .findAllById(dto.getEquipamentosIds());
-         * departamento.setEquipamentos(equipamentos);
-         */
-
-        departamento.setEquipamentos(new ArrayList<>()); // Equipamentos vazios na
+        departamento.setEquipamentos(new ArrayList<>()); 
 
         return departamentoRepository.save(departamento);
     }
@@ -83,15 +74,12 @@ public class DepartamentoService {
 
         departamento.setNome(dto.getNome());
         departamento.setFone(dto.getFone());
-        // departamento.setSecretaria(secretariaRepository.findById(dto.getSecretariaId()).orElseThrow());
-
         return departamentoRepository.save(departamento);
     }
 
     public void deleteById(Long id) {
         findById(id);
 
-        // Verificar se existem solicitantes associados
         List<Solicitante> solicitantes = solicitanteRepository.findAllByDepartamento_Id(id);
         if (!solicitantes.isEmpty()) {
             throw new RuntimeException(

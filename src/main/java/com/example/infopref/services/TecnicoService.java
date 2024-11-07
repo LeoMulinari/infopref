@@ -27,7 +27,6 @@ public class TecnicoService {
     }
 
     public Tecnico findById(Long id) {
-        // userService.VerificaADM();
         Optional<Tecnico> obj = this.tecnicoRepository.findById(id);
 
         if (obj.isPresent()) {
@@ -38,7 +37,6 @@ public class TecnicoService {
 
     public Tecnico create(Tecnico obj) {
         userService.VerificaADM();
-        // Certifique-se de que o usuário associado existe
         if (obj.getUser() == null || obj.getUser().getId() == null) {
             throw new RuntimeException("Usuário não informado ou inválido");
         }

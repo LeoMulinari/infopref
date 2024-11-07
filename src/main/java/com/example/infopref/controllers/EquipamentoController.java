@@ -26,7 +26,7 @@ import com.example.infopref.services.EquipamentoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/equipamentos") // http://localhost:8080/equipamento
+@RequestMapping("/equipamentos")
 @Validated
 public class EquipamentoController {
     @Autowired
@@ -41,7 +41,7 @@ public class EquipamentoController {
         return ResponseEntity.ok().body(equipamentosDTO);
     }
 
-    @GetMapping("/{id}") // http://localhost:8080/equipamento/2
+    @GetMapping("/{id}")
     public ResponseEntity<Equipamento> getEquipamentoById(@PathVariable("id") Long id) {
         Equipamento obj = this.equipamentoService.findById(id);
 
@@ -59,11 +59,7 @@ public class EquipamentoController {
             @RequestBody @Valid EquipamentoDTO equipamentoDTO,
             @RequestParam Long departamentoId) {
 
-        System.out.println(
-                "POST Equipamento: Departamento ID = " + departamentoId + ", Data Aquisicao = "
-                        + equipamentoDTO.getData_aquisicao());
         Equipamento obj = new Equipamento();
-        // Configurar obj com os dados do DTO
         obj.setNum_patrimonio(equipamentoDTO.getNum_patrimonio());
         obj.setModelo(equipamentoDTO.getModelo());
         obj.setMarca(equipamentoDTO.getMarca());
@@ -77,8 +73,6 @@ public class EquipamentoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> putEquipamento(@PathVariable("id") Long id, @Valid @RequestBody Equipamento newObj) {
-        System.out.println(newObj);
-        System.out.println(id);
         newObj.setId(id);
         this.equipamentoService.update(newObj);
         return ResponseEntity.noContent().build();
