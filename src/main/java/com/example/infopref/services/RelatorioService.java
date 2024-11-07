@@ -62,7 +62,7 @@ public class RelatorioService {
 
             // Carregar a logo da empresa
             try {
-                Image logo = Image.getInstance("infopref-back\\src\\main\\resources\\logo.png");
+                Image logo = Image.getInstance("src\\main\\java\\com\\example\\infopref\\services\\logo.png");
                 logo.scaleToFit(60, 60);
                 logo.setAlignment(Image.ALIGN_LEFT);
                 document.add(logo);
@@ -84,20 +84,19 @@ public class RelatorioService {
             String dataGeracao = "Data de Geração: "
                     + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             Paragraph dataParagraph = new Paragraph(dataGeracao, subTitleFont);
-            dataParagraph.setAlignment(Paragraph.ALIGN_CENTER);
+            dataParagraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(dataParagraph);
 
             // Adicionar o período do relatório
             String periodo = "Período: " + formatDate(dataInicio) + " a " + formatDate(dataFim);
             Paragraph periodoParagraph = new Paragraph(periodo, subTitleFont);
-            periodoParagraph.setAlignment(Paragraph.ALIGN_CENTER);
+            periodoParagraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(periodoParagraph);
 
             String filtroTexto = getFiltroDescricao(tipo, filtro);
 
             Paragraph filtroParagraph = new Paragraph(filtroTexto, subTitleFont);
-            filtroParagraph.setAlignment(Paragraph.ALIGN_CENTER);
-            filtroParagraph.setSpacingBefore(10f); // Adiciona espaçamento entre tipo e filtro
+            filtroParagraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(filtroParagraph);
 
             document.add(new Paragraph(" "));
