@@ -32,7 +32,7 @@ public class Solicitante {
     private String nome;
 
     @Column(name = "fone", unique = false, nullable = true, updatable = true)
-    @Size(min = 14, max = 15)
+    @Size(min = 10, max = 11)
     private String fone;
 
     @Column(name = "id_acesso_remoto", unique = true, nullable = true, updatable = true)

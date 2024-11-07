@@ -30,6 +30,6 @@ public class Secretaria {
     private String nome;
 
     @Column(name = "fone", unique = false, nullable = true, updatable = true)
-    @Size(min = 14, max = 15)
+    @Size(min = 10, max = 11)
     private String fone;
 }
